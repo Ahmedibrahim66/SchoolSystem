@@ -1,10 +1,8 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mustafa0_1/Data/models/ParentModels/ParentChildrenModels.dart';
 import 'package:mustafa0_1/presentations/features/ParentFeatures/NavigationDrawer/bloc/parentnavigation_bloc.dart';
+import 'package:mustafa0_1/presentations/features/ParentFeatures/chooseChildPage/chooseChild.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/navigationHome.dart';
-import 'package:mustafa0_1/presentations/widgets/dialogs/chooseChildDialog.dart';
 
 class ParentNavigationHome extends StatefulWidget {
   @override
@@ -19,19 +17,23 @@ class _ParentNavigationHomeState extends State<ParentNavigationHome> {
 
           if(state is ParentnavigationInitial)
           {
+            //fetch the parent children
             BlocProvider.of<ParentnavigationBloc>(context).add(FetchParentChildrensEvent());
           }
 
           if(state is ParentChildInitial)
           {
+            //navigation home for the first child
             return NavigationHome();
           }
           if(state is ChildrenChange){
             
-            Navigator.pop(context);
-            showChangeMessage(context , state.children);
+            //choose child page
+            return ChooseChildPage(children: state.children,);
+           
             
           }
+         
           return Container(
             color: Colors.white,
           );
@@ -39,13 +41,4 @@ class _ParentNavigationHomeState extends State<ParentNavigationHome> {
     });
   }
 
-   Future showChangeMessage(BuildContext context , List<ParentChildrenModel> list) {
-    return showModal(
-      configuration: FadeScaleTransitionConfiguration(),
-      context: context,
-      builder: (BuildContext context) => CustomDialog3(
-        children:list,
-      ),
-    );
-  }
 }

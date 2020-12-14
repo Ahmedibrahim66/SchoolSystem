@@ -3,18 +3,22 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mustafa0_1/Data/mappers/StudentMappers.dart';
-import 'package:mustafa0_1/Data/models/CurrentYearAndWeekModel.dart';
-import 'package:mustafa0_1/Data/models/DaysOfWeekModel.dart';
-import 'package:mustafa0_1/Data/models/ScheduleSubjectModel.dart';
-import 'package:mustafa0_1/Data/models/StudentClassPeriodModel.dart';
-import 'package:mustafa0_1/Data/models/StudentHomeworkdsAndExamsModel.dart';
-import 'package:mustafa0_1/Data/models/StudentSibjectModel.dart';
-import 'package:mustafa0_1/Domain/entities/student_schedule_entity.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/CurrentYearAndWeekModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/DaysOfWeekModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ScheduleSubjectModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentSibjectModel.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_schedule_entity.dart';
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'student_schedual_event.dart';
 part 'student_schedual_state.dart';
 
+
+/// since the  scheudle is part of the dashborad it will not have its separete 
+/// widget so this bloc will be used in the dashboard widget. 
+ 
 class StudentSchedualBloc
     extends Bloc<StudentSchedualEvent, StudentSchedualState> {
   final StudentRepository repository;
@@ -66,7 +70,8 @@ class StudentSchedualBloc
         daysOfWeekModel = await repository.getWeekDays(
             token, yearAndWeekModel.weekNo, yearAndWeekModel.year);
 
-       
+        currentWeek = yearAndWeekModel.weekNo;
+        currentYear = yearAndWeekModel.year;
 
         // daysOfWeekModel =
         //     await repository.getWeekDays(token, currentWeek, "2019");
@@ -113,7 +118,7 @@ class StudentSchedualBloc
 
         yield StudentSchedualLoading(loadingNumber: 7);
 
-        // ///TODO: Change this to daily home work and exams
+        // TODO: Change this to daily home work and exams || no idea why i wrote this check later
         // List<List<List<StudentHomeworkAndExams>>> weekHomeworkAndExams =
         //     await repository.getStudentWeekHomeWroksAndExams(
         //         token,

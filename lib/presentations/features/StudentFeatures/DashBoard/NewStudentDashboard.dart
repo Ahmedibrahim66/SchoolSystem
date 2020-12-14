@@ -5,7 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mustafa0_1/Data/DataSources/remoteData/studentRemoteDataSoruce.dart';
-import 'package:mustafa0_1/Data/models/StudentHomeworkdsAndExamsModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Data/repositories/StudentRepositoryImp.dart';
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';

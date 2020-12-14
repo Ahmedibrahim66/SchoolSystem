@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
 part 'login_first_stage_event.dart';
 part 'login_first_stage_state.dart';
 

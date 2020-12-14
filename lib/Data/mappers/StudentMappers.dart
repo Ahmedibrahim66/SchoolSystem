@@ -1,21 +1,22 @@
-import 'package:mustafa0_1/Data/models/BehaviourModel.dart';
-import 'package:mustafa0_1/Data/models/DailyMarksModel.dart';
-import 'package:mustafa0_1/Data/models/ScheduleSubjectModel.dart';
-import 'package:mustafa0_1/Data/models/StudentAbsenceModel.dart';
-import 'package:mustafa0_1/Data/models/StudentHealthModel.dart';
-import 'package:mustafa0_1/Data/models/StudentInfoModel.dart';
-import 'package:mustafa0_1/Data/models/StudentLateModel.dart';
-import 'package:mustafa0_1/Data/models/StudentLearningMaterialModel.dart';
-import 'package:mustafa0_1/Data/models/Student_payment_model.dart';
-import 'package:mustafa0_1/Domain/entities/student_absence_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_behaviour_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_daily_marks_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_health_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_info_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_late_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_learning_material.dart';
-import 'package:mustafa0_1/Domain/entities/student_payment_entity.dart';
-import 'package:mustafa0_1/Domain/entities/student_schedule_entity.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/DailyMarksModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ScheduleSubjectModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLateModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/Student_payment_model.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_absence_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_behaviour_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_daily_marks_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_health_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_info_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_late_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_learning_material.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_payment_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_schedule_entity.dart';
+
 
 class StudentDataMapper {
   static StudentInfoEntity infoMapper(StudentInfoModel studentInfoModel) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_card/expansion_card.dart';
-import 'package:mustafa0_1/Domain/entities/student_payment_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_payment_entity.dart';
 
 class StudentPaymentCard extends StatelessWidget {
   final StudentPaymentEntity studentPaymentEntity;

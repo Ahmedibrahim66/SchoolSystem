@@ -11,8 +11,7 @@ class _LoadingAnimationState extends State<LoadingAnimation> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
+      
       color: Colors.grey[850],
       child: Center(
         child: SpinKitFadingCube(

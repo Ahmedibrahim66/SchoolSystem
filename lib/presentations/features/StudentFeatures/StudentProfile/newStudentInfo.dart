@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:mustafa0_1/Domain/entities/student_info_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_info_entity.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/navigationDrawer.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentAttendence/bloc/student_attendence_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentAttendence/newStudentAttencdence.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentBehaviour/bloc/student_behaviour_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentBehaviour/newStudentBehavior.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHealthPage/bloc/student_health_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHealthPage/studentHealth.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentLatePage/StudentLate.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentLatePage/bloc/studentlate_bloc.dart';
@@ -30,12 +33,25 @@ class _NewStudentInfoState extends State<NewStudentInfo> {
           appBar: AppBar(
             leading: GestureDetector(
                 onTap: () {
-                  BlocProvider.of<StudentprofilenavigationBloc>(context)
-                      .add(NavigateToStudentProfileID());
-                  BlocProvider.of<StudentInfoBloc>(context)
-                      .add(FetchStudentInfo());
-                  BlocProvider.of<StudentlateBloc>(context)
-                      .add(FetchStudentLate());
+                  if (state is StudentProfileIDState)
+                    BlocProvider.of<StudentInfoBloc>(context)
+                        .add(FetchStudentInfo());
+
+                  if (state is StudentProfileAbsenceState)
+                    BlocProvider.of<StudentAttendenceBloc>(context)
+                        .add(FetchStudentAbsence());
+
+                  if (state is StudentProfileBehavoirState)
+                    BlocProvider.of<StudentBehaviourBloc>(context)
+                        .add(FetchStudentBehaviour());
+
+                  if (state is StudentProfileLateState)
+                    BlocProvider.of<StudentlateBloc>(context)
+                        .add(FetchStudentLate());
+
+                  if (state is StudentProfileHealthState)
+                    BlocProvider.of<StudentHealthBloc>(context)
+                        .add(FetchStudentHealth());
                 },
                 child: Icon(Icons.refresh)),
             elevation: 0,
@@ -105,7 +121,7 @@ class _NewStudentInfoState extends State<NewStudentInfo> {
 
     if (state is StudentProfileLateState) return NewStudentLate();
 
-    if(state is StudentProfileHealthState ) return NewStudentHealth();
+    if (state is StudentProfileHealthState) return NewStudentHealth();
 
     return Container();
   }

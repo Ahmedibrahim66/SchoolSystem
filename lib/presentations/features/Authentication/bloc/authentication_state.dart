@@ -29,8 +29,13 @@ class Authenticating extends AuthenticationState {
   
 }
 
-// class AuthenticationError extends AuthenticationState {
+class AuthenticatingChildChange extends AuthenticationState {
   
-// }
+}
+
+class NoState extends AuthenticationState {
+  
+}
+
 
 
