@@ -27,7 +27,10 @@ class ParentnavigationBloc
       String userId = preferences.getString('ParentId');
       List<ParentChildrenModel> list =
           await repository.getParentChildrens(token, userId);
+      if(preferences.getString('userId') == null)
+      {
       await preferences.setString('userId', list[0].studentNo);
+      }
 
       yield ParentChildInitial(children: list);
     }
@@ -36,15 +39,17 @@ class ParentnavigationBloc
       String token = preferences.getString('userToken');
       String userId = preferences.getString('ParentId');
       List<ParentChildrenModel> list =
-          await repository.getParentChildrens(token, userId);
+      await repository.getParentChildrens(token, userId);
       yield ChildrenChange(children: list);
     }
 
-    if (event is NewChildrensChoosenEvent) {
+    // if (event is NewChildrensChoosenEvent) {
 
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setString('userId', event.userId);
-      yield ParentChildInitial(children: []);
-    }
+    //   SharedPreferences preferences = await SharedPreferences.getInstance();
+    //   await preferences.setString('userId', event.userId);
+    //   yield ParentChildInitial(children: []);
+
+
+    // }
   }
 }

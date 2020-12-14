@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mustafa0_1/Data/mappers/StudentMappers.dart';
-import 'package:mustafa0_1/Data/models/StudentLearningMaterialModel.dart';
-import 'package:mustafa0_1/Domain/entities/student_learning_material.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_learning_material.dart';
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

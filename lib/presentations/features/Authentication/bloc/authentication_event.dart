@@ -5,9 +5,8 @@ abstract class AuthenticationEvent extends Equatable {
 }
 
 class AuthenticationStarted extends AuthenticationEvent {
-   @override
+  @override
   List<Object> get props => [];
-
 }
 
 class AuthenticationLoggedIn extends AuthenticationEvent {
@@ -15,42 +14,27 @@ class AuthenticationLoggedIn extends AuthenticationEvent {
   final String userId;
   final String userType;
 
-  const AuthenticationLoggedIn({@required this.token, @required this.userId , @required this.userType});
+  const AuthenticationLoggedIn(
+      {@required this.token, @required this.userId, @required this.userType});
 
   @override
-  List<Object> get props => [token , userId];
+  List<Object> get props => [token, userId];
 
   @override
-  String toString() => 'AuthenticationLoggedIn { token: $token, userId: $userId }';
+  String toString() =>
+      'AuthenticationLoggedIn { token: $token, userId: $userId }';
 }
 
 class AuthenticationLoggedOut extends AuthenticationEvent {
-   @override
+  @override
   List<Object> get props => [];
 }
 
-// class LogIn extends AuthenticationEvent{
+class AuthenticationChangeChildEvent extends AuthenticationEvent {
+  final String userId;
 
-//   String userId;
-//   String passwrod;
-//   String userType;
+  AuthenticationChangeChildEvent(this.userId);
 
-//   LogIn({this.userId,this.passwrod , this.userType});
-
-//   @override
-//   // TODO: implement props
-//   List<Object> get props => [];
-// }
-
-// class Logout extends AuthenticationEvent{
-//   @override
-//   // TODO: implement props
-//   List<Object> get props => [];
-// }
-
-// class AppStarted extends AuthenticationEvent{
-//   @override
-//   // TODO: implement props
-//   List<Object> get props => [];
-// }
-
+  @override
+  List<Object> get props => [];
+}

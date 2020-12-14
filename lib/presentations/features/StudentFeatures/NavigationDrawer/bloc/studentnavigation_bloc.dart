@@ -35,33 +35,39 @@ class StudentnavigationBloc
 
     if (event is NavigateToStudentProfile) {
       Navigator.pop(event.context);
-      if (preferences.getString('ParentId') != null)
-      {
-        print(preferences.getString('ParentId'));
+      if (preferences.getString('ParentId') != null) 
         yield StudentProfileState(1);
-
-      }
-      else
-      yield StudentProfileState(0);
+       else
+        yield StudentProfileState(0);
     }
 
     if (event is NavigateToStudentGrades) {
       Navigator.pop(event.context);
-      yield StudentMarksState(0);
+      if (preferences.getString('ParentId') != null) 
+        yield StudentMarksState(1);
+      else
+       yield StudentMarksState(0);
     }
-
     if (event is NavigateToStudentPayment) {
       Navigator.pop(event.context);
-      yield StudentsPaymentState(0);
+      if (preferences.getString('ParentId') != null)
+        yield StudentsPaymentState(1);
+      else
+        yield StudentsPaymentState(0);
     }
     if (event is NavigateToStudentLeaningMaterial) {
       Navigator.pop(event.context);
-      yield StudentsLearningMaterialState(0);
+      if (preferences.getString('ParentId') != null)
+        yield StudentsLearningMaterialState(1);
+      else
+        yield StudentsLearningMaterialState(0);
+    }
+    if(event is NavigateToStudentDiscussion) {
+      yield StudentsDiscussionState(0);
+    }
+    if(event is NavigateToStudentExams) {
+      yield StudentsExamState(0);
     }
 
-
-    //////////////// parent child choose
-    
-   
   }
 }

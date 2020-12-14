@@ -4,8 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mustafa0_1/Data/mappers/StudentMappers.dart';
-import 'package:mustafa0_1/Data/models/StudentAbsenceModel.dart';
-import 'package:mustafa0_1/Domain/entities/student_absence_entity.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_absence_entity.dart';
+
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

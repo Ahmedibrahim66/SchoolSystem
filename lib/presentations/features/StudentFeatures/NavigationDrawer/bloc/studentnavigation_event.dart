@@ -38,9 +38,19 @@ final BuildContext context;
   NavigateToStudentLeaningMaterial(this.context) : assert(context != null);
 }
 
+class NavigateToStudentExams extends StudentnavigationEvent {
+final BuildContext context;
+  NavigateToStudentExams(this.context) : assert(context != null);
+}
+
 class ChooseChild extends StudentnavigationEvent {
 final BuildContext context;
   ChooseChild(this.context) : assert(context != null);
+}
+
+class NavigateToStudentDiscussion extends StudentnavigationEvent {
+final BuildContext context;
+  NavigateToStudentDiscussion(this.context) : assert(context != null);
 }
 
 

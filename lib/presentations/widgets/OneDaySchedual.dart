@@ -1,8 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:expansion_card/expansion_card.dart';
-import 'package:mustafa0_1/Data/models/StudentHomeworkdsAndExamsModel.dart';
-import 'package:mustafa0_1/Domain/entities/student_schedule_entity.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_schedule_entity.dart';
 import 'package:mustafa0_1/presentations/widgets/dialogs/homeworkDialog.dart';
 
 // ignore: must_be_immutable
