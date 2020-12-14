@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mustafa0_1/Domain/entities/student_daily_marks_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_daily_marks_entity.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentMarksPage/StudentDailyMarks/bloc/daily_marks_bloc.dart';
 
@@ -26,7 +26,7 @@ class _NewStudentDailyMarksState extends State<NewStudentDailyMarks> {
           return Container(
               width: MediaQuery.of(context).size.width,
               child: ListView.builder(
-                  itemCount: 9,
+                  itemCount: state.dailyMarksList.length,
                   itemBuilder: (context, index) {
                     return dailyMarksTile(state.dailyMarksList[index]);
                   }));

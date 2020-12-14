@@ -51,6 +51,11 @@ class StudentsLearningMaterialState extends StudentnavigationState {
    
 }
 
+class StudentsExamState extends StudentnavigationState {
+  StudentsExamState(int state) : super(state);
+   
+}
+
 class ParentChooseChildState extends StudentnavigationState {
   ParentChooseChildState() : super(1);
 }

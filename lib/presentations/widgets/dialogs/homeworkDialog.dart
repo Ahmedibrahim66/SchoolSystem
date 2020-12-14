@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mustafa0_1/Data/models/StudentHomeworkdsAndExamsModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 
 class CustomDialog2 extends StatelessWidget {
@@ -13,7 +13,7 @@ class CustomDialog2 extends StatelessWidget {
     this.homeworkAndExams,
   });
 
-  List type = [
+  final List type = [
     "اختبار",
     "وظيفة",
     "مشروع",

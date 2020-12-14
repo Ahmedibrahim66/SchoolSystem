@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_card/expansion_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mustafa0_1/Domain/entities/student_daily_marks_entity.dart';
+import 'package:mustafa0_1/Domain/entities/studentEntities/student_daily_marks_entity.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentMarksPage/StudentDailyMarks/bloc/daily_marks_bloc.dart';
 import 'package:mustafa0_1/presentations/widgets/LoadingAnimation.dart';
 

@@ -12,6 +12,10 @@ import 'package:mustafa0_1/presentations/features/Login/bloc/login_bloc.dart';
 import 'package:mustafa0_1/presentations/features/Login/screens/FirstLoginStage/bloc/login_first_stage_bloc.dart';
 import 'package:mustafa0_1/presentations/widgets/dialogs/logInFailed.dart';
 
+/// this class cotains the four login parts for the user
+/// each part has his own navgiation and widget 
+
+
 class LoginFinalStage extends StatefulWidget {
   final AuthenticationRepository authenticationRepository;
 
@@ -39,61 +43,63 @@ class _LoginFinalStageState extends State<LoginFinalStage> {
         color: Colors.white,
         child: SafeArea(
           child: Scaffold(
-            resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.white,
-            body: Container(
-              child: Stack(
-                children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          color: Colors.white,
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          color: AppThemeData().primaryColor,
-                        ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(70)),
+            body: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: Stack(
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: Container(
                             color: Colors.white,
                           ),
-                          child: upperBody(),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            color: AppThemeData().primaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Expanded(
+                          child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(70)),
-                              color: AppThemeData().primaryColor,
+                                  bottomRight: Radius.circular(70)),
+                              color: Colors.white,
                             ),
-                            child: BlocProvider(
-                              create: (context) => LoginBloc(
-                                  authenticationBloc:
-                                      BlocProvider.of<AuthenticationBloc>(
-                                          context),
-                                  authenticationRepositoryImp:
-                                      widget.authenticationRepository),
-                              child: lowerBody(),
-                            )),
-                      )
-                    ],
-                  )
-                ],
+                            child: upperBody(),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(70)),
+                                color: AppThemeData().primaryColor,
+                              ),
+                              child: BlocProvider(
+                                create: (context) => LoginBloc(
+                                    authenticationBloc:
+                                        BlocProvider.of<AuthenticationBloc>(
+                                            context),
+                                    authenticationRepositoryImp:
+                                        widget.authenticationRepository),
+                                child: lowerBody(),
+                              )),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -126,51 +132,54 @@ class _LoginFinalStageState extends State<LoginFinalStage> {
           ),
         ),
         Expanded(
-          child: BlocBuilder<LoginFirstStageBloc, LoginFirstStageState>(
-            builder: (context, state) {
-              String asset;
-              if (state is StudentTypeChoosen) {
-                logInType = "S";
-                asset = "assets/LoginPageAssets/loginAsset.svg";
-                return Container(
-                  child: SvgPicture.asset(
-                    asset,
-                  ),
-                );
-              }
-              if (state is ParentTypeChoosen) {
-                logInType = "P";
-                asset = "assets/LoginPageAssets/parent.svg";
-                return Container(
-                  child: SvgPicture.asset(
-                    asset,
-                  ),
-                );
-              }
-              if (state is TeacherTypeChoosen) {
-                logInType = "T";
-                asset = "assets/LoginPageAssets/teacher.svg";
-                return Container(
-                  child: SvgPicture.asset(
-                    asset,
-                  ),
-                );
-              }
-              if (state is ManagmentTypeChoosen) {
-                asset = "assets/LoginPageAssets/managment.svg";
-                return Container(
-                  child: SvgPicture.asset(
-                    asset,
-                  ),
-                );
-              }
+          child: Hero(
+            tag: "Hero22",
+            child: BlocBuilder<LoginFirstStageBloc, LoginFirstStageState>(
+              builder: (context, state) {
+                String asset;
+                if (state is StudentTypeChoosen) {
+                  logInType = "S";
+                  asset = "assets/LoginPageAssets/loginAsset.svg";
+                  return Container(
+                    child: SvgPicture.asset(
+                      asset,
+                    ),
+                  );
+                }
+                if (state is ParentTypeChoosen) {
+                  logInType = "P";
+                  asset = "assets/LoginPageAssets/parent.svg";
+                  return Container(
+                    child: SvgPicture.asset(
+                      asset,
+                    ),
+                  );
+                }
+                if (state is TeacherTypeChoosen) {
+                  logInType = "T";
+                  asset = "assets/LoginPageAssets/teacher.svg";
+                  return Container(
+                    child: SvgPicture.asset(
+                      asset,
+                    ),
+                  );
+                }
+                if (state is ManagmentTypeChoosen) {
+                  asset = "assets/LoginPageAssets/managment.svg";
+                  return Container(
+                    child: SvgPicture.asset(
+                      asset,
+                    ),
+                  );
+                }
 
-              return Container(
-                child: SvgPicture.asset(
-                  asset,
-                ),
-              );
-            },
+                return Container(
+                  child: SvgPicture.asset(
+                    asset,
+                  ),
+                );
+              },
+            ),
           ),
         ),
         SizedBox(

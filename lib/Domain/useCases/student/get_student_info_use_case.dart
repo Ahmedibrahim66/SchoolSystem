@@ -1,5 +1,5 @@
 
-import 'package:mustafa0_1/Data/models/StudentInfoModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
 
 class GetStudentInfo{

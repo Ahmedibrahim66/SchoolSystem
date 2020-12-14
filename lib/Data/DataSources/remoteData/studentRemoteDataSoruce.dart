@@ -1,20 +1,28 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:mustafa0_1/Data/models/BehaviourModel.dart';
-import 'package:mustafa0_1/Data/models/CurrentYearAndWeekModel.dart';
-import 'package:mustafa0_1/Data/models/DailyMarksModel.dart';
-import 'package:mustafa0_1/Data/models/DaysOfWeekModel.dart';
-import 'package:mustafa0_1/Data/models/ScheduleSubjectModel.dart';
-import 'package:mustafa0_1/Data/models/StudentAbsenceModel.dart';
-import 'package:mustafa0_1/Data/models/StudentHealthModel.dart';
-import 'package:mustafa0_1/Data/models/StudentHomeworkdsAndExamsModel.dart';
-import 'package:mustafa0_1/Data/models/StudentClassPeriodModel.dart';
-import 'package:mustafa0_1/Data/models/StudentInfoModel.dart';
-import 'package:mustafa0_1/Data/models/StudentLateModel.dart';
-import 'package:mustafa0_1/Data/models/StudentLearningMaterialModel.dart';
-import 'package:mustafa0_1/Data/models/StudentSibjectModel.dart';
-import 'package:mustafa0_1/Data/models/Student_payment_model.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/CurrentYearAndWeekModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/DailyMarksModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/DaysOfWeekModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ExamQuestionReviewModel.dart';
+
+import 'package:mustafa0_1/Data/models/StudentModels/ScheduleSubjectModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
+
+import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLateModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentSibjectModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/Student_payment_model.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/chatModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
+
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
 
 class StudentRemoteDataSource implements StudentRepository {
@@ -350,7 +358,8 @@ class StudentRemoteDataSource implements StudentRepository {
   }
 
   @override
-  Future<List<StudentLateModel>> getStudentLate(String token, String userId) async {
+  Future<List<StudentLateModel>> getStudentLate(
+      String token, String userId) async {
     String mainURL = "http://portal.gtseries.net/School_API/";
     try {
       Response response =
@@ -368,7 +377,8 @@ class StudentRemoteDataSource implements StudentRepository {
   }
 
   @override
-  Future<List<StudentHealthModel>> getStudentHealth(String token, String userId) async {
+  Future<List<StudentHealthModel>> getStudentHealth(
+      String token, String userId) async {
     String mainURL = "http://portal.gtseries.net/School_API/";
     try {
       Response response =
@@ -385,4 +395,188 @@ class StudentRemoteDataSource implements StudentRepository {
     }
   }
 
+  @override
+  Future<List<ChatListModel>> getStudentChatList(
+      String token, String userId) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response =
+          await get('$mainURL/chat_index/?token=$token&Student_No=$userId');
+      List data = jsonDecode(response.body);
+      List<ChatListModel> list = [];
+      for (dynamic chatlist in data) {
+        list.add(ChatListModel.fromJson(chatlist));
+      }
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ChatModel>> getChatListChat(
+      String token, String userId, String chatRoomId) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/fetch_chat/?token=$token&Student_No=$userId&Chat_Room_Id=$chatRoomId');
+      List data = jsonDecode(response.body);
+      List<ChatModel> list = [];
+      for (dynamic chat in data) {
+        list.add(ChatModel.fromJson(chat));
+      }
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      return null;
+    }
+  }
+
+  @override
+  Future sendChatMessaeg(
+      String token, String userId, String chatRoomId, String message) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      //to send chat you need to send a get requset with the message to the server
+      // ignore: unused_local_variable
+      Response response 
+      = await get(
+          '$mainURL/send_message/?token=$token&Student_No=$userId&Chat_Room_Id=$chatRoomId&Message=$message');
+    } catch (e) {
+      //usually there should not be any error unless its from the servr 
+      print(e.toString());
+    }
+  }
+
+  @override
+  Future<List<StudentExamModel>> getStudentExamsList(
+      String token, String userId) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response =
+          await get('$mainURL/student_exams/?token=$token&Student_No=$userId');
+      List data = jsonDecode(response.body);
+      List<StudentExamModel> list = [];
+      for (dynamic examList in data) {
+        list.add(StudentExamModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ExamQuestionReviewModel>> enterStudentExamReview(
+      String token, String userId, int examId) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/show_student_exam_review/?token=$token&Student_No=$userId&Exam_Seq=$examId');
+
+      List data = jsonDecode(response.body);
+      List<ExamQuestionReviewModel> list = [];
+      for (dynamic examList in data) {
+        list.add(ExamQuestionReviewModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ExamQuestionReviewModel>> getStudentExamReviewQuestion(
+      String token, String userId, int examId, int questionSeq) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/show_selected_question_review/?token=$token&Student_No=$userId&Exam_Seq=$examId&Question_Seq=$questionSeq');
+      List data = jsonDecode(response.body);
+      List<ExamQuestionReviewModel> list = [];
+      for (dynamic examList in data) {
+        list.add(ExamQuestionReviewModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ExamQuestionAnswerModel>> showSelectedQuestion(
+      String token, String userId, int examId, int questionSeq) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/show_selected_question/?token=$token&Student_No=$userId&Exam_Seq=$examId&Question_Seq=$questionSeq');
+      List data = jsonDecode(response.body);
+      List<ExamQuestionAnswerModel> list = [];
+      for (dynamic examList in data) {
+        list.add(ExamQuestionAnswerModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ExamQuestionAnswerModel>> showStudentExam(
+      String token, String userId, int examId) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/show_student_exam/?token=$token&Student_No=$userId&Exam_Seq=$examId');
+
+      List data = jsonDecode(response.body);
+      List<ExamQuestionAnswerModel> list = [];
+      for (dynamic examList in data) {
+        list.add(ExamQuestionAnswerModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<String> submitQuestionAnswer(String token, String userId, int examId,
+      int questionSeq, String selectedAnswer, String isEnd) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+
+    print(
+        "$token + $userId  + $examId + $questionSeq + $selectedAnswer + $isEnd ");
+
+    try {
+      Response response = await get(
+          '$mainURL/submit_question_answer/?token=$token&Student_No=$userId&Exam_Seq=$examId&Question_Seq=$questionSeq&Selected_Answer=$selectedAnswer&Is_End=$isEnd');
+
+      String data = response.body;
+      print("data is" + data.toString());
+
+      return data;
+    } catch (e) {
+      //handel excpetion later
+      print("error is " + e.toString());
+      return null;
+    }
+  }
 }

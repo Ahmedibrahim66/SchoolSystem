@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mustafa0_1/Domain/repositories/authenticationRepository.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/Login/screens/FirstLoginStage/bloc/login_first_stage_bloc.dart';
 
+/// this is the second login screen where the user will select which
+/// type he is which then will navigate him to the login screen
+
 class FirstLoginScreen extends StatefulWidget {
+  final AuthenticationRepository repository;
+  FirstLoginScreen({this.repository});
   @override
   _FirstLoginScreenState createState() => _FirstLoginScreenState();
 }
@@ -59,17 +65,22 @@ class _FirstLoginScreenState extends State<FirstLoginScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          BlocProvider.of<LoginFirstStageBloc>(context)
-                              .add(ChooseParentType());
-                        },
-                        child: Container(
-                          color: AppThemeData().primaryColor,
-                          child: category("assets/LoginPageAssets/parent.svg",
-                              "ولي أمر", Colors.white),
-                        ),
-                      ),
+                      child: Builder(builder: (context) {
+                        return GestureDetector(
+                          onTap: () {
+                           
+                            BlocProvider.of<LoginFirstStageBloc>(context)
+                                .add(ChooseParentType());
+                               
+                           
+                          },
+                          child: Container(
+                            color: AppThemeData().primaryColor,
+                            child: category("assets/LoginPageAssets/parent.svg",
+                                "ولي أمر", Colors.white),
+                          ),
+                        );
+                      }),
                     ),
                     Expanded(
                         child: GestureDetector(
@@ -137,11 +148,14 @@ class _FirstLoginScreenState extends State<FirstLoginScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FittedBox(
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: SvgPicture.asset(
-              asset,
+        Hero(
+          tag: "Hero",
+                  child: FittedBox(
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: SvgPicture.asset(
+                asset,
+              ),
             ),
           ),
         ),

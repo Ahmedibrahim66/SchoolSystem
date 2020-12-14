@@ -1,4 +1,4 @@
-import 'package:mustafa0_1/Data/models/ExamDateModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ExamDateModel.dart';
 
 class DailyMarksModel {
   String examNo;

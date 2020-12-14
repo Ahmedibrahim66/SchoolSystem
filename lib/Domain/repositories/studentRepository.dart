@@ -1,17 +1,25 @@
-import 'package:mustafa0_1/Data/models/BehaviourModel.dart';
-import 'package:mustafa0_1/Data/models/CurrentYearAndWeekModel.dart';
-import 'package:mustafa0_1/Data/models/DailyMarksModel.dart';
-import 'package:mustafa0_1/Data/models/DaysOfWeekModel.dart';
-import 'package:mustafa0_1/Data/models/ScheduleSubjectModel.dart';
-import 'package:mustafa0_1/Data/models/StudentAbsenceModel.dart';
-import 'package:mustafa0_1/Data/models/StudentClassPeriodModel.dart';
-import 'package:mustafa0_1/Data/models/StudentHealthModel.dart';
-import 'package:mustafa0_1/Data/models/StudentHomeworkdsAndExamsModel.dart';
-import 'package:mustafa0_1/Data/models/StudentInfoModel.dart';
-import 'package:mustafa0_1/Data/models/StudentLateModel.dart';
-import 'package:mustafa0_1/Data/models/StudentSibjectModel.dart';
-import 'package:mustafa0_1/Data/models/Student_payment_model.dart';
-import 'package:mustafa0_1/Data/models/StudentLearningMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/CurrentYearAndWeekModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/DailyMarksModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/DaysOfWeekModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ExamQuestionReviewModel.dart';
+
+import 'package:mustafa0_1/Data/models/StudentModels/ScheduleSubjectModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
+
+import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLateModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentSibjectModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/Student_payment_model.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/chatModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
+
 
 abstract class StudentRepository {
 
@@ -32,6 +40,21 @@ abstract class StudentRepository {
   Future<List<StudentLearningMaterialModel>> getStudentLearningMaterial(String token, String userId);
   Future<List<StudentLateModel>>  getStudentLate(String token, String userId);
   Future<List<StudentHealthModel>>  getStudentHealth(String token, String userId);
-
+ 
+  //student chat
+  Future<List<ChatListModel>>  getStudentChatList(String token, String userId);
+  Future<List<ChatModel>> getChatListChat(String token , String userId , String chatRoomId);
+  Future sendChatMessaeg(String token ,String userId, String chatRoomId , String message);
+  
+  //view exam to review
+  Future<List<StudentExamModel>> getStudentExamsList(String token, String userId);
+  Future<List<ExamQuestionReviewModel>> enterStudentExamReview(String token, String userId, int examId);
+  Future<List<ExamQuestionReviewModel>> getStudentExamReviewQuestion(String token, String userId, int examId, int questionSeq);
+  
+  //view exam to answer
+  Future<List<ExamQuestionAnswerModel>> showStudentExam(String token, String userId, int examId);
+  Future<List<ExamQuestionAnswerModel>> showSelectedQuestion(String token, String userId, int examId, int questionSeq);
+  Future<String> submitQuestionAnswer(String token, String userId, int examId, int questionSeq, String selectedAnswer, String isEnd);
+  
 
 }
