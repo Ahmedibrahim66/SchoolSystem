@@ -8,6 +8,7 @@ import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentAttende
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentBehaviour/bloc/student_behaviour_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/bloc/studentexams_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHealthPage/bloc/student_health_bloc.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeworkMaterial/bloc/student_homework_material_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentLatePage/bloc/studentlate_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentLearningMaterial/bloc/studentlearnnigmaterial_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentMarksPage/StudentDailyMarks/bloc/daily_marks_bloc.dart';
@@ -65,6 +66,9 @@ class StudentBlocCreator extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => StudentexamsBloc(repository1),
+          ),
+           BlocProvider(
+            create: (context) => StudentHomeworkMaterialBloc(repository1),
           ),
         ], child: NavigationHome());
   }

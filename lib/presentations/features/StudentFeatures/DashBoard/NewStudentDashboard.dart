@@ -51,6 +51,11 @@ class _NewStudentDashboardState extends State<NewStudentDashboard> {
 
   @override
   Widget build(BuildContext context) {
+      final availableHeight = MediaQuery.of(context).size.height -
+        AppBar().preferredSize.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+
     return BlocBuilder<StudentSchedualBloc, StudentSchedualState>(
         builder: (context, state) {
       if (state is StudentSchedualEmpty) {
@@ -78,9 +83,8 @@ class _NewStudentDashboardState extends State<NewStudentDashboard> {
       if (state is StudentSchedualEror) {
         changeStatusBarColor();
         return Scaffold(
-          endDrawer: StudentNavigationDrawer(),
+            endDrawer: StudentNavigationDrawer(),
             appBar: AppBar(
-              
               leading: GestureDetector(
                   onTap: () {
                     BlocProvider.of<StudentSchedualBloc>(context)
@@ -162,11 +166,30 @@ class _NewStudentDashboardState extends State<NewStudentDashboard> {
                               BorderRadius.only(topLeft: Radius.circular(70)),
                           color: Colors.white,
                         ),
-                        child: lowerBody(state),
+                        // child: lowerBody(state),
                       ),
                     )
                   ],
-                )
+                ),
+                //made to scrol the lower body instead of previous scrolling 
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: availableHeight/3,
+                      ),
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.only(topLeft: Radius.circular(70)),
+                          color: Colors.white,
+                        ),
+                        child: lowerBody(state),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ));
       }
@@ -545,6 +568,10 @@ class _NewStudentDashboardState extends State<NewStudentDashboard> {
                         itemBuilder: (context, index) {
                           return classPeriodTile(index, state);
                         }),
+
+                        SizedBox(
+                    height: 30,
+                  ),
                 ],
               ),
       ),

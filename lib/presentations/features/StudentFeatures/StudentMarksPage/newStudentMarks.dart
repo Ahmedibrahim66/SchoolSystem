@@ -59,17 +59,15 @@ class _NewStudentMarksPageState extends State<NewStudentMarksPage> {
               ),
               Column(
                 children: [
-                  Expanded(
-                      flex: 2,
-                      child: Container(
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(70)),
-                          color: AppThemeData().primaryColor,
-                        ),
-                        child: upperBody(state),
-                      )),
+                  Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(70)),
+                      color: AppThemeData().primaryColor,
+                    ),
+                    child: upperBody(state),
+                  ),
                   Expanded(
                     flex: 3,
                     child: Container(
@@ -95,17 +93,17 @@ class _NewStudentMarksPageState extends State<NewStudentMarksPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // SizedBox(
+          //   height: 10,
+          // ),
+          // Container(
+          //     width: MediaQuery.of(context).size.width / 2.5,
+          //     child: SvgPicture.asset(
+          //       "assets/StudentMarksPageAssets/exams.svg",
+          //       width: MediaQuery.of(context).size.width / 2.5,
+          //     )),
           SizedBox(
-            height: 10,
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width / 2.5,
-              child: SvgPicture.asset(
-                "assets/StudentMarksPageAssets/exams.svg",
-                width: MediaQuery.of(context).size.width / 2.5,
-              )),
-          SizedBox(
-            height: 10,
+            height: 30,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -132,7 +130,9 @@ class _NewStudentMarksPageState extends State<NewStudentMarksPage> {
                         child: Container(
                           width: 40,
                           child: SvgPicture.asset(
-                              "assets/StudentMarksPageAssets/calendar.svg" , width: 40,),
+                            "assets/StudentMarksPageAssets/calendar.svg",
+                            width: 40,
+                          ),
                         ),
                       ),
                     ),
@@ -172,7 +172,9 @@ class _NewStudentMarksPageState extends State<NewStudentMarksPage> {
                         child: Container(
                           width: 40,
                           child: SvgPicture.asset(
-                              "assets/StudentMarksPageAssets/monday.svg" , width: 40,),
+                            "assets/StudentMarksPageAssets/monday.svg",
+                            width: 40,
+                          ),
                         ),
                       ),
                     ),
@@ -192,7 +194,10 @@ class _NewStudentMarksPageState extends State<NewStudentMarksPage> {
                 ],
               ),
             ],
-          )
+          ),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );

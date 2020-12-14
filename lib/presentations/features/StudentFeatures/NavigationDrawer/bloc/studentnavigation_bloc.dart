@@ -62,6 +62,13 @@ class StudentnavigationBloc
       else
         yield StudentsLearningMaterialState(0);
     }
+    if (event is NavigateToStudentHomeWorkMaterial) {
+      Navigator.pop(event.context);
+      if (preferences.getString('ParentId') != null)
+        yield StudentsHomeWorkMaterialState(1);
+      else
+        yield StudentsHomeWorkMaterialState(0);
+    }
     if(event is NavigateToStudentDiscussion) {
       yield StudentsDiscussionState(0);
     }

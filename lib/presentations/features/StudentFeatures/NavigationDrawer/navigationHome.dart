@@ -4,6 +4,7 @@ import 'package:mustafa0_1/presentations/features/StudentFeatures/ChatList/chatl
 import 'package:mustafa0_1/presentations/features/StudentFeatures/DashBoard/NewStudentDashboard.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/bloc/studentnavigation_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/studentExamsPage.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeworkMaterial/StudentHomeWorkMaterial.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentLearningMaterial/StudentLearningMaterial.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentMarksPage/newStudentMarks.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentPayment/newStudentPayment.dart';
@@ -44,6 +45,10 @@ class _NavigationHomeState extends State<NavigationHome> {
 
       if (state is StudentsLearningMaterialState) {
         return StudentLearningMaterial();
+      }
+
+      if (state is StudentsHomeWorkMaterialState) {
+        return StudentHomeworkMaterial();
       }
 
       if (state is StudentsExamState) {

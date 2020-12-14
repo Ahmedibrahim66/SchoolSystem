@@ -11,12 +11,14 @@ import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentLateModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentSibjectModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/Student_payment_model.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ZoomLinksModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/chatModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
 
@@ -55,6 +57,16 @@ abstract class StudentRepository {
   Future<List<ExamQuestionAnswerModel>> showStudentExam(String token, String userId, int examId);
   Future<List<ExamQuestionAnswerModel>> showSelectedQuestion(String token, String userId, int examId, int questionSeq);
   Future<String> submitQuestionAnswer(String token, String userId, int examId, int questionSeq, String selectedAnswer, String isEnd);
-  
+
+
+  //view zoom links 
+  Future<List<ZoomLinkModel>> getZoomLinks(String token, String userId,);
+
+
+  //student homework material الوظائف 
+    Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(String token, String userId,);
+
+
+
 
 }

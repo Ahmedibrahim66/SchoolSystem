@@ -95,16 +95,22 @@ class StudentNavigationDrawer extends StatelessWidget {
                     : Container(),
 
                 // exams page is only for the student (dont show for parent) state = 0
-                 state.state == 0 ? state is StudentsExamState
-                    ? drawerTilePressed("الأمتحانات")
-                    : drawerTile("الأمتحانات", () {
-                        BlocProvider.of<StudentnavigationBloc>(context)
-                            .add(NavigateToStudentExams(context));
-                      }) : Container(),
+                state.state == 0
+                    ? state is StudentsExamState
+                        ? drawerTilePressed("الأمتحانات")
+                        : drawerTile("الأمتحانات", () {
+                            BlocProvider.of<StudentnavigationBloc>(context)
+                                .add(NavigateToStudentExams(context));
+                          })
+                    : Container(),
 
                 // homeworks page is for both users
-                //TODO: homework page
-                drawerTile("الوظائف", () {}),
+                state is StudentsHomeWorkMaterialState
+                    ? drawerTilePressed("الوظائف")
+                    : drawerTile("الوظائف", () {
+                        BlocProvider.of<StudentnavigationBloc>(context)
+                            .add(NavigateToStudentHomeWorkMaterial(context));
+                      }),
 
                 // learning material page is for both users
                 state is StudentsLearningMaterialState

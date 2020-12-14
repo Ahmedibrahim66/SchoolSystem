@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mustafa0_1/Domain/entities/studentEntities/student_learning_material.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/navigationDrawer.dart';
-import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentLearningMaterial/bloc/studentlearnnigmaterial_bloc.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeworkMaterial/bloc/student_homework_material_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StudentLearningMaterial extends StatefulWidget {
+class StudentHomeworkMaterial extends StatefulWidget {
   @override
-  _StudentLearningMaterial createState() => _StudentLearningMaterial();
+  _StudentHomeworkMaterialState createState() =>
+      _StudentHomeworkMaterialState();
 }
 
-class _StudentLearningMaterial extends State<StudentLearningMaterial> {
+class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StudentLearningMaterialBloc,
-        StudentlearnnigmaterialState>(builder: (context, state) {
-      changeStatusBarColor();
+    return BlocBuilder<StudentHomeworkMaterialBloc,
+        StudentHomeworkMaterialState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
               onTap: () {
-                BlocProvider.of<StudentLearningMaterialBloc>(context)
-                    .add(FetchStudentLearningMaterial());
+                BlocProvider.of<StudentHomeworkMaterialBloc>(context)
+                    .add(FetchStudentHomeworkMaterial());
               },
               child: Icon(Icons.refresh)),
           elevation: 0,
@@ -43,12 +42,12 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
     });
   }
 
-  Widget body(StudentlearnnigmaterialState state) {
-    if (state is StudentlearnnigmaterialEmpty) {
-      BlocProvider.of<StudentLearningMaterialBloc>(context)
-          .add(FetchStudentLearningMaterial());
+  Widget body(StudentHomeworkMaterialState state) {
+    if (state is StudentHomeworkMaterialInitial) {
+      BlocProvider.of<StudentHomeworkMaterialBloc>(context)
+          .add(FetchStudentHomeworkMaterial());
     }
-    if (state is StudentlearnnigmaterialLoaded) {
+    if (state is StudentHomeworkMaterialLoaded) {
       return Container(
           height: MediaQuery.of(context).size.height -
               AppBar().preferredSize.height -
@@ -61,7 +60,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
             ],
           ));
     }
-    if (state is StudentlearnnigmaterialError) {
+    if (state is StudentHomeworkMaterialError) {
       return Container(
         width: double.infinity,
         height: double.infinity,
@@ -81,7 +80,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
         ));
   }
 
-  Widget learningMaterialBody(StudentlearnnigmaterialLoaded state) {
+  Widget learningMaterialBody(StudentHomeworkMaterialLoaded state) {
     return Container(
       child: Column(
         children: [
@@ -91,20 +90,20 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
           Container(
               child: FittedBox(
             child: SvgPicture.asset(
-              "assets/StudentLearningMaterialAssets/learn.svg",
-              width: MediaQuery.of(context).size.width / 2,
+              "assets/StudentMarksPageAssets/report-card.svg",
+              width: MediaQuery.of(context).size.width / 4,
             ),
           )),
           SizedBox(
-            height: 20,
+            height: 30,
+            
           ),
           Container(
-              width: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 4,
               child: FittedBox(
                   child: Text(
-                "المواد التعليمية",
-                style:
-                    AppThemeData().tajwalText.copyWith(color: Colors.white),
+                "الوظائف",
+                style: AppThemeData().tajwalText.copyWith(color: Colors.white),
               ))),
           SizedBox(
             height: 20,
@@ -127,7 +126,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
     );
   }
 
-  noteItem(StudentLearningMaterialEntity list) {
+  noteItem(StudentsHomeworkMaterialModel list) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
@@ -145,7 +144,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                   height: 40,
                   child: Center(
                       child: SvgPicture.asset(
-                          "assets/StudentLearningMaterialAssets/student.svg"))),
+                          "assets/StudentMarksPageAssets/report-card.svg"))),
               childrenPadding: EdgeInsets.only(right: 70),
               backgroundColor: AppThemeData().thirdColor,
               title: Row(
@@ -198,7 +197,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                     ),
                     Container(
                       child: Text(
-                        "وصف المادة التعليمية",
+                        "وصف الوظيفة	",
                         style: AppThemeData()
                             .tajwalText
                             .copyWith(color: Colors.white, fontSize: 16),
@@ -219,6 +218,69 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                     ),
                     Container(
                       child: Text(
+                        "اخر موعد للتسليم",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "${list.handDate}",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Text(
+                        "العلامة القصوى",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "${list.highMark}",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Text(
+                        "علامة الطالب",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "${list.studentGrade}",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Text(
                         "وصلات خارجية",
                         style: AppThemeData()
                             .tajwalText
@@ -228,9 +290,13 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                     ),
                     Container(
                       child: InkWell(
-                        onTap: () => launch('https://flutter.dev'),
+                        onTap: () {
+                          try {
+                            launch('list.linkUrl');
+                          } catch (e) {}
+                        },
                         child: Text(
-                          "${list.linkURL}",
+                          list.linkUrl == null ? "" : "${list.linkUrl}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),
@@ -241,6 +307,66 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                     SizedBox(
                       height: 20,
                     ),
+
+                      Container(
+                      child: Text(
+                        "الملف المرفق",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    Container(
+                      child: InkWell(
+                        onTap: () {
+                          try {
+                            launch(list.fileDesc);
+                          } catch (e) {}
+                        },
+                        child: Text(
+                          list.fileDesc == null ? "" : "${list.fileDesc}",
+                          style: AppThemeData()
+                              .tajwalText
+                              .copyWith(color: Colors.black, fontSize: 16),
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+
+                    Container(
+                      child: Text(
+                        "تسليم الوظيفة",
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    Container(
+                      child: InkWell(
+                        onTap: () {
+                          try {
+                            launch(list.filePath);
+                          } catch (e) {}
+                        },
+                        child: Text(
+                          list.filePath == null ? "" : "${list.filePath}",
+                          style: AppThemeData()
+                              .tajwalText
+                              .copyWith(color: Colors.black, fontSize: 16),
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
                   ],
                 ),
               ],
@@ -249,9 +375,5 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
         ),
       ),
     );
-  }
-
-  changeStatusBarColor() {
-    FlutterStatusbarcolor.setStatusBarColor(AppThemeData().primaryColor);
   }
 }

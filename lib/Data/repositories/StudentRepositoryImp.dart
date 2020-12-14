@@ -9,6 +9,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/ScheduleSubjectModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
@@ -16,6 +17,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/StudentLateModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentSibjectModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/Student_payment_model.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ZoomLinksModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/chatModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
@@ -201,5 +203,15 @@ class StudentRepositoryImp implements StudentRepository {
       int questionSeq, String selectedAnswer, String isEnd) async {
     return await studentRemoteDataSource.submitQuestionAnswer(
         token, userId, examId, questionSeq, selectedAnswer, isEnd);
+  }
+
+  @override
+  Future<List<ZoomLinkModel>> getZoomLinks(String token, String userId) async  {
+    return await studentRemoteDataSource.getZoomLinks(token, userId);
+  }
+
+  @override
+  Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(String token, String userId) async  {
+    return await studentRemoteDataSource.getStudentHomeworkMaterial(token, userId);
   }
 }

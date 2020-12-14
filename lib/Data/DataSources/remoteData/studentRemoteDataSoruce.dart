@@ -13,6 +13,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
 
 import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
@@ -20,6 +21,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/StudentLateModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentSibjectModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/Student_payment_model.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ZoomLinksModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/chatModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
 
@@ -576,6 +578,46 @@ class StudentRemoteDataSource implements StudentRepository {
     } catch (e) {
       //handel excpetion later
       print("error is " + e.toString());
+      return null;
+    }
+  }
+
+  @override
+  Future<List<ZoomLinkModel>> getZoomLinks(String token, String userId) async {
+     String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/zoom_meetings/?token=$token&Student_No=$userId');
+
+      List data = jsonDecode(response.body);
+      List<ZoomLinkModel> list = [];
+      for (dynamic examList in data) {
+        list.add(ZoomLinkModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(String token, String userId) async {
+     String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/Students_Homework_Material/?token=$token&Student_No=$userId');
+
+      List data = jsonDecode(response.body);
+      List<StudentsHomeworkMaterialModel> list = [];
+      for (dynamic examList in data) {
+        list.add(StudentsHomeworkMaterialModel.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      print(e);
       return null;
     }
   }

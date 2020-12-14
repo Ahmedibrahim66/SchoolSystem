@@ -57,8 +57,8 @@ class _StudentIDCardState extends State<StudentIDCard> {
             Container(
                 width: MediaQuery.of(context).size.width / 3,
                 height: 100,
-                child: SvgPicture.asset(
-                    "assets/StudentProfilePageAssets/female.svg" ,)),
+                child: SvgPicture.asset( studentInfo.gender == "Male" ? "assets/StudentProfilePageAssets/male.svg" :
+                    "assets/StudentProfilePageAssets/female.svg", )),
             SizedBox(
               height: 20,
             ),

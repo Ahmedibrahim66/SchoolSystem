@@ -1,41 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mustafa0_1/Data/DataSources/remoteData/studentRemoteDataSoruce.dart';
-import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
-import 'package:mustafa0_1/Data/repositories/StudentRepositoryImp.dart';
-import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/ZoomLinksModel.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
-import 'package:mustafa0_1/presentations/features/StudentFeatures/Chat/bloc/chat_bloc.dart';
-import 'package:mustafa0_1/presentations/features/StudentFeatures/Chat/chat.dart';
-import 'package:mustafa0_1/presentations/features/StudentFeatures/ChatList/bloc/chatlist_bloc.dart';
-import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/navigationDrawer.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/ZoomLinksPage/bloc/zoom_links_bloc.dart';
-import 'package:mustafa0_1/presentations/features/StudentFeatures/ZoomLinksPage/zoomLinksPage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ChatList extends StatefulWidget {
+class ZoomLinksPage extends StatefulWidget {
   @override
-  _ChatListState createState() => _ChatListState();
+  _ZoomLinksPageState createState() => _ZoomLinksPageState();
 }
 
-class _ChatListState extends State<ChatList> {
-  StudentRepository impl =
-      new StudentRepositoryImp(new StudentRemoteDataSource());
-
+class _ZoomLinksPageState extends State<ZoomLinksPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatlistBloc, ChatlistState>(builder: (context, state) {
-      changeStatusBarColor();
+    return BlocBuilder<ZoomLinksBloc, ZoomLinksState>(
+        builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
               onTap: () {
-                BlocProvider.of<ChatlistBloc>(context)
-                    .add(FetchStudentChatList());
+                BlocProvider.of<ZoomLinksBloc>(context).add(FetchZoomLinks());
               },
               child: Icon(Icons.refresh)),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_forward)),
+            ),
+          ],
           elevation: 0,
           backgroundColor: AppThemeData().primaryColor,
           centerTitle: true,
@@ -44,21 +41,20 @@ class _ChatListState extends State<ChatList> {
             style: AppThemeData().lexendDecaText.copyWith(color: Colors.white),
           ),
         ),
-        endDrawer: StudentNavigationDrawer(),
         backgroundColor: AppThemeData().primaryColor,
         body: body(state),
       );
     });
   }
 
-  Widget body(ChatlistState state) {
-    if (state is ChatlistInitial) {
-      BlocProvider.of<ChatlistBloc>(context).add(FetchStudentChatList());
+  Widget body(ZoomLinksState state) {
+    if (state is ZoomLinksInitial) {
+      BlocProvider.of<ZoomLinksBloc>(context).add(FetchZoomLinks());
     }
-    if (state is ChatListLoaded) {
-      return chatList(state);
+    if (state is ZoomLinksLoaded) {
+      return zoomLinksbody(state);
     }
-    if (state is ChatListError) {
+    if (state is ZoomLinksError) {
       return Container(
         width: double.infinity,
         height: double.infinity,
@@ -78,7 +74,7 @@ class _ChatListState extends State<ChatList> {
         ));
   }
 
-  Widget chatList(ChatListLoaded state) {
+  Widget zoomLinksbody(ZoomLinksLoaded state) {
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -90,8 +86,8 @@ class _ChatListState extends State<ChatList> {
             Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: 100,
-                child: SvgPicture.asset(
-                    "assets/StudentDiscussionPageAssests/discussion.svg")),
+                child: Image.asset(
+                    "assets/StudentDiscussionPageAssests/zoom.png")),
             SizedBox(
               height: 20,
             ),
@@ -99,30 +95,10 @@ class _ChatListState extends State<ChatList> {
                 width: MediaQuery.of(context).size.width / 4,
                 child: FittedBox(
                     child: Text(
-                  "حلقات النقاش",
+                  "لقاءات Zoom",
                   style:
                       AppThemeData().tajwalText.copyWith(color: Colors.white),
                 ))),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                final StudentRepository studentRepo =
-                    new StudentRepositoryImp(StudentRemoteDataSource());
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                            create: (context) => ZoomLinksBloc(studentRepo),
-                            child: ZoomLinksPage())));
-              },
-              child: Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: 60,
-                  child: Image.asset(
-                      "assets/StudentDiscussionPageAssests/zoom.png")),
-            ),
             SizedBox(
               height: 20,
             ),
@@ -145,27 +121,19 @@ class _ChatListState extends State<ChatList> {
     );
   }
 
-  Widget noteItem(ChatListModel model) {
+  Widget noteItem(ZoomLinkModel model) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BlocProvider<ChatBloc>(
-                    create: (context) =>
-                        ChatBloc(model.chatRoomId, impl, model.chatName),
-                    child: Chat(
-                      chatRoomName: model.chatName,
-                    )),
-              ));
+          try {
+            launch(model.meetingLink);
+          } catch (e) {}
         },
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30)),
               color: AppThemeData().thirdColor),
-          height: 160,
           child: Column(
             children: [
               SizedBox(
@@ -177,7 +145,7 @@ class _ChatListState extends State<ChatList> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      model.chatName,
+                      model.subjectDesc,
                       style: AppThemeData()
                           .tajwalText
                           .copyWith(color: Colors.white, fontSize: 14),
@@ -185,7 +153,7 @@ class _ChatListState extends State<ChatList> {
                     SizedBox(
                       width: 20,
                     ),
-                    Text(" : اسم حلقة النقاش",
+                    Text("الموضوع",
                         style: AppThemeData().tajwalText.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -201,7 +169,7 @@ class _ChatListState extends State<ChatList> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(model.teacherName,
+                    Text("",
                         style: AppThemeData()
                             .tajwalText
                             .copyWith(color: Colors.white, fontSize: 14)),
@@ -224,14 +192,60 @@ class _ChatListState extends State<ChatList> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(model.dateCreated,
+                    Text(model.meetingDesc,
                         style: AppThemeData()
                             .tajwalText
                             .copyWith(color: Colors.white, fontSize: 14)),
                     SizedBox(
                       width: 20,
                     ),
-                    Text(" : تاريخ الاضافة",
+                    Text("عنوان اللقاء",
+                        style: AppThemeData().tajwalText.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14)),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(model.meetingDate,
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 14)),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text("تاريخ اللقاء",
+                        style: AppThemeData().tajwalText.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14)),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(model.startTime,
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.white, fontSize: 14)),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text("وقت اللقاء",
                         style: AppThemeData().tajwalText.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -246,19 +260,12 @@ class _ChatListState extends State<ChatList> {
                 borderRadius: BorderRadius.all(Radius.circular(40)),
                 child: RaisedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocProvider<ChatBloc>(
-                              create: (context) => ChatBloc(
-                                  model.chatRoomId, impl, model.chatName),
-                              child: Chat(
-                                chatRoomName: model.chatName,
-                              )),
-                        ));
+                    try {
+                      launch(model.meetingLink);
+                    } catch (e) {}
                   },
                   color: Colors.green,
-                  child: Text("المشاركة",
+                  child: Text("الدخول الى لقاء zoom",
                       style: AppThemeData()
                           .tajwalText
                           .copyWith(color: Colors.white, fontSize: 14)),
@@ -269,9 +276,5 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
     );
-  }
-
-  changeStatusBarColor() {
-    FlutterStatusbarcolor.setStatusBarColor(AppThemeData().primaryColor);
   }
 }
