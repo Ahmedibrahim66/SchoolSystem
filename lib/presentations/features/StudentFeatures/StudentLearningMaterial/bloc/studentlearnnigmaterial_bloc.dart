@@ -33,8 +33,7 @@ class StudentLearningMaterialBloc
         String userId = preferences.getString('userId');
         final List<StudentLearningMaterialModel> list =
             await repository.getStudentLearningMaterial(token, userId);
-        final List<StudentLearningMaterialEntity> studentLearnningMaterial =  StudentDataMapper.learningMaterialMaper(list);
-        yield StudentlearnnigmaterialLoaded(list:  studentLearnningMaterial);
+        yield StudentlearnnigmaterialLoaded(list:  list);
         print(list.length);
       } catch (e) {
         print(e.toString());

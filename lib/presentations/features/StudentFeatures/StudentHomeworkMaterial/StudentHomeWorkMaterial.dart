@@ -150,7 +150,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
               title: Row(
                 children: [
                   Text(
-                    "${list.subjectNo}",
+                    "${list.subjectDesc}",
                     style: AppThemeData()
                         .tajwalText
                         .copyWith(color: Colors.white, fontSize: 16),
@@ -162,7 +162,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                 ],
               ),
               subtitle: Text(
-                "${list.employeeNo}",
+                "${list.teacherName}",
                 style: AppThemeData()
                     .tajwalText
                     .copyWith(color: Colors.black, fontSize: 14),
@@ -185,7 +185,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                     ),
                     Container(
                       child: Text(
-                        "${list.classNo} الشعبة ${list.sectionNo}",
+                        "${list.classDesc} الشعبة ${list.sectionSymbol}",
                         style: AppThemeData()
                             .tajwalText
                             .copyWith(color: Colors.black, fontSize: 16),
@@ -296,7 +296,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                           } catch (e) {}
                         },
                         child: Text(
-                          list.linkUrl == null ? "" : "${list.linkUrl}",
+                          list.linkUrl == null ? "لا يوجد وصلات خارجية" : "${list.linkUrl}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),
@@ -325,7 +325,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                           } catch (e) {}
                         },
                         child: Text(
-                          list.fileDesc == null ? "" : "${list.fileDesc}",
+                          list.fileDesc == null ? "لا يوجد ملف" : "${list.fileDesc}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),
@@ -355,7 +355,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                           } catch (e) {}
                         },
                         child: Text(
-                          list.filePath == null ? "" : "${list.filePath}",
+                          list.filePath == null ? "لا يوجد تسليم" : "${list.filePath}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),

@@ -206,26 +206,6 @@ class StudentDataMapper {
     return list;
   }
 
-  static List<StudentLearningMaterialEntity> learningMaterialMaper(
-      List<StudentLearningMaterialModel> studentMaterial) {
-    List<StudentLearningMaterialEntity> list = [];
-
-    for (StudentLearningMaterialModel material in studentMaterial) {
-      list.add(StudentLearningMaterialEntity(
-        classNo: material.classNo,
-        sectionNo: material.sectionNo,
-        subjectNo: material.subjectNo,
-        employeeNo: material.employeeNo,
-        materialDesc: material.materialDesc,
-        linkURL: material.linkURL,
-        fileDesc: material.fileDesc,
-        filePath: material.filePath,
-        isActive: material.isActive,
-      ));
-    }
-
-    return list;
-  }
 
    static List<StudentLateEntity> lateMapper(
       List<StudentLateModel> studentLateList) {

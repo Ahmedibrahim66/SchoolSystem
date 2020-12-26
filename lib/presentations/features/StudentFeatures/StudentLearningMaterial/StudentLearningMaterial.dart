@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentLearningMaterialModel.dart';
 import 'package:mustafa0_1/Domain/entities/studentEntities/student_learning_material.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/navigationDrawer.dart';
@@ -127,7 +128,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
     );
   }
 
-  noteItem(StudentLearningMaterialEntity list) {
+  noteItem(StudentLearningMaterialModel list) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
@@ -151,7 +152,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
               title: Row(
                 children: [
                   Text(
-                    "${list.subjectNo}",
+                    "${list.subjectDesc}",
                     style: AppThemeData()
                         .tajwalText
                         .copyWith(color: Colors.white, fontSize: 16),
@@ -163,7 +164,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                 ],
               ),
               subtitle: Text(
-                "${list.employeeNo}",
+                "${list.teacherName}",
                 style: AppThemeData()
                     .tajwalText
                     .copyWith(color: Colors.black, fontSize: 14),
@@ -186,7 +187,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                     ),
                     Container(
                       child: Text(
-                        "${list.classNo} الشعبة ${list.sectionNo}",
+                        "${list.classDesc} الشعبة ${list.sectionSymbol}",
                         style: AppThemeData()
                             .tajwalText
                             .copyWith(color: Colors.black, fontSize: 16),
@@ -230,7 +231,7 @@ class _StudentLearningMaterial extends State<StudentLearningMaterial> {
                       child: InkWell(
                         onTap: () => launch('https://flutter.dev'),
                         child: Text(
-                          "${list.linkURL}",
+                          "${list.linkUrl}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),

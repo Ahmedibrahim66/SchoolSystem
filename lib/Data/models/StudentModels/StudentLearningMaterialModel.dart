@@ -1,4 +1,8 @@
 class StudentLearningMaterialModel {
+  String teacherName;
+  String classDesc;
+  String sectionSymbol;
+  String subjectDesc;
   String studYear;
   String classNo;
   String sectionNo;
@@ -6,50 +10,57 @@ class StudentLearningMaterialModel {
   String employeeNo;
   int seq;
   String materialDesc;
-  String linkURL;
+  String linkUrl;
   String filePath;
   String fileDesc;
   int groupId;
-  String isActive;
+  String isACTIVE;
   String insTime;
   String insUser;
   String insTimeDate;
 
-  StudentLearningMaterialModel({
-    this.studYear,
-    this.classNo,
-    this.sectionNo,
-    this.seq,
-    this.subjectNo,
-    this.employeeNo,
-    this.materialDesc,
-    this.linkURL,
-    this.fileDesc,
-    this.filePath,
-    this.groupId,
-    this.insTime,
-    this.insTimeDate,
-    this.insUser,
-    this.isActive,
-  });
+  StudentLearningMaterialModel(
+      {this.teacherName,
+      this.classDesc,
+      this.sectionSymbol,
+      this.subjectDesc,
+      this.studYear,
+      this.classNo,
+      this.sectionNo,
+      this.subjectNo,
+      this.employeeNo,
+      this.seq,
+      this.materialDesc,
+      this.linkUrl,
+      this.filePath,
+      this.fileDesc,
+      this.groupId,
+      this.isACTIVE,
+      this.insTime,
+      this.insUser,
+      this.insTimeDate});
 
-  factory StudentLearningMaterialModel.fromJson(Map<String, dynamic> json) {
-    return StudentLearningMaterialModel(
-      studYear: json["Stud_Year"],
-      classNo: json["Class_No"],
-      sectionNo: json["Section_No"],
-      seq: json["Seq"],
-      subjectNo: json["Subject_No"],
-      employeeNo: json["Employee_No"],
-      materialDesc: json["Material_Desc"],
-      linkURL: json["Link_Url"],
-      fileDesc: json["File_Desc"],
-      filePath: json["File_Path"],
-      groupId: json["Group_Id"],
-      insTime: json["Ins_Time"],
-      insTimeDate: json["Ins_Time_Date"],
-      insUser: json["Ins_User"],
-      isActive: json["Is_ACTIVE"],
-    );
+  StudentLearningMaterialModel.fromJson(Map<String, dynamic> json) {
+    teacherName = json['Teacher_Name'];
+    classDesc = json['Class_Desc'];
+    sectionSymbol = json['Section_Symbol'];
+    subjectDesc = json['Subject_Desc'];
+    studYear = json['Stud_Year'];
+    classNo = json['Class_No'];
+    sectionNo = json['Section_No'];
+    subjectNo = json['Subject_No'];
+    employeeNo = json['Employee_No'];
+    seq = json['Seq'];
+    materialDesc = json['Material_Desc'];
+    linkUrl = json['Link_Url'];
+    filePath = json['File_Path'];
+    fileDesc = json['File_Desc'];
+    groupId = json['Group_Id'];
+    isACTIVE = json['Is_ACTIVE'];
+    insTime = json['Ins_Time'];
+    insUser = json['Ins_User'];
+    insTimeDate = json['Ins_Time_Date'];
   }
+
+ 
 }

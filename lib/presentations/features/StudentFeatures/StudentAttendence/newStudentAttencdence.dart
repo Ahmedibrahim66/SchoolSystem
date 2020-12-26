@@ -90,133 +90,136 @@ class _NewStudentAttendenceState extends State<NewStudentAttendence> {
     );
   }
 
-  Container noteItem(StudentAbsenceEntity list) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: AppThemeData().thirdColor,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
+  Padding noteItem(StudentAbsenceEntity list) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: AppThemeData().thirdColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "التاريخ",
+                      style: AppThemeData()
+                          .tajwalText
+                          .copyWith(color: Colors.white, fontSize: 16),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    Container(
+                      height: 30,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "${list.absenceDate}",
+                        textAlign: TextAlign.right,
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "العذر",
+                      style: AppThemeData()
+                          .tajwalText
+                          .copyWith(color: Colors.white, fontSize: 16),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    Container(
+                      height: 30,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "${list.absenceDesc}",
+                        textAlign: TextAlign.right,
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "البيان",
+                      style: AppThemeData()
+                          .tajwalText
+                          .copyWith(color: Colors.white, fontSize: 16),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    Container(
+                      height: 30,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        list.isAccepted == "Y" ? "موافق عليه" : "غير موافق عليه",
+                        textAlign: TextAlign.right,
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "ملاحظات",
+                      style: AppThemeData()
+                          .tajwalText
+                          .copyWith(color: Colors.white, fontSize: 16),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    Container(
+                      height: 50,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        list.remarks == null ? "لا يوجد" : "${list.remarks}",
+                        textAlign: TextAlign.right,
+                        style: AppThemeData()
+                            .tajwalText
+                            .copyWith(color: Colors.black, fontSize: 16),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Column(
                 children: [
                   SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "التاريخ",
-                    style: AppThemeData()
-                        .tajwalText
-                        .copyWith(color: Colors.white, fontSize: 16),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  Container(
-                    height: 30,
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "${list.absenceDate}",
-                      textAlign: TextAlign.right,
-                      style: AppThemeData()
-                          .tajwalText
-                          .copyWith(color: Colors.black, fontSize: 16),
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "العذر",
-                    style: AppThemeData()
-                        .tajwalText
-                        .copyWith(color: Colors.white, fontSize: 16),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  Container(
-                    height: 30,
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "${list.absenceDesc}",
-                      textAlign: TextAlign.right,
-                      style: AppThemeData()
-                          .tajwalText
-                          .copyWith(color: Colors.black, fontSize: 16),
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
-                  SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    "البيان",
-                    style: AppThemeData()
-                        .tajwalText
-                        .copyWith(color: Colors.white, fontSize: 16),
-                    textDirection: TextDirection.rtl,
-                  ),
                   Container(
-                    height: 30,
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      list.isAccepted == "Y" ? "موافق عليه" : "غير موافق عليه",
-                      textAlign: TextAlign.right,
-                      style: AppThemeData()
-                          .tajwalText
-                          .copyWith(color: Colors.black, fontSize: 16),
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "ملاحظات",
-                    style: AppThemeData()
-                        .tajwalText
-                        .copyWith(color: Colors.white, fontSize: 16),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  Container(
-                    height: 50,
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      list.remarks == null ? "لا يوجد" : "${list.remarks}",
-                      textAlign: TextAlign.right,
-                      style: AppThemeData()
-                          .tajwalText
-                          .copyWith(color: Colors.black, fontSize: 16),
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
+                    width: 50,
+                    height: 40,
+                    child: SvgPicture.asset(
+                        "assets/StudentProfilePageAssets/stopwatch.svg"),
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: 50,
-                  height: 40,
-                  child: SvgPicture.asset(
-                      "assets/StudentProfilePageAssets/stopwatch.svg"),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

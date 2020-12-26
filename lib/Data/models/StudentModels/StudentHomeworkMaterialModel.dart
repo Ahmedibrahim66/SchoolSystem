@@ -1,4 +1,8 @@
 class StudentsHomeworkMaterialModel {
+  String teacherName;
+  String classDesc;
+  String sectionSymbol;
+  String subjectDesc;
   String studYear;
   String classNo;
   String sectionNo;
@@ -24,7 +28,11 @@ class StudentsHomeworkMaterialModel {
   String studentGrade;
 
   StudentsHomeworkMaterialModel(
-      {this.studYear,
+      {this.teacherName,
+      this.classDesc,
+      this.sectionSymbol,
+      this.subjectDesc,
+      this.studYear,
       this.classNo,
       this.sectionNo,
       this.subjectNo,
@@ -49,6 +57,10 @@ class StudentsHomeworkMaterialModel {
       this.studentGrade});
 
   StudentsHomeworkMaterialModel.fromJson(Map<String, dynamic> json) {
+    teacherName = json['Teacher_Name'];
+    classDesc = json['Class_Desc'];
+    sectionSymbol = json['Section_Symbol'];
+    subjectDesc = json['Subject_Desc'];
     studYear = json['Stud_Year'];
     classNo = json['Class_No'];
     sectionNo = json['Section_No'];
@@ -74,5 +86,5 @@ class StudentsHomeworkMaterialModel {
     studentGrade = json['Student_Grade'];
   }
 
- 
+  
 }

@@ -13,7 +13,7 @@ class StudentlearnnigmaterialEmpty extends StudentlearnnigmaterialState {}
 class StudentlearnnigmaterialLoading extends StudentlearnnigmaterialState{}
 
 class StudentlearnnigmaterialLoaded extends StudentlearnnigmaterialState {
-  final List<StudentLearningMaterialEntity> list;
+  final List<StudentLearningMaterialModel> list;
 
   const StudentlearnnigmaterialLoaded({@required this.list})
       : assert(list != null);

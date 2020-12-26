@@ -184,7 +184,7 @@ class _NewStudentBehavoirState extends State<NewStudentBehavoir> {
                     textDirection: TextDirection.rtl,
                   ),
                   Container(
-                    height: 30,
+                    
                     alignment: Alignment.centerRight,
                     child: Text(
                       list.behDesc,
