@@ -26,7 +26,7 @@ class StudentNavigationDrawer extends StatelessWidget {
               children: [
                 Container(
                   color: AppThemeData().primaryColor,
-                  height: MediaQuery.of(context).size.height / 4,
+                  height: MediaQuery.of(context).size.height / 3.8,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: SvgPicture.asset(

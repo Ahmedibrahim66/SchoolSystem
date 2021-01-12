@@ -72,7 +72,7 @@ class _ExamSubmissionPageState extends State<ExamSubmissionPage> {
                   color: Colors.grey[900],
                   child: Text("لا يوجد اسئلة"),
                 )
-              : examQuestionLoadedBody(state.list[0]);
+              : examQuestionLoadedBody(state.list[0], state.baseUrl);
         } else if (state is ExamSubmissionPageError) {
           return Container(
             color: Colors.grey[900],
@@ -88,22 +88,26 @@ class _ExamSubmissionPageState extends State<ExamSubmissionPage> {
     );
   }
 
-  Widget examQuestionLoadedBody(ExamQuestionAnswerModel question) {
+  Widget examQuestionLoadedBody(
+      ExamQuestionAnswerModel question, String baseUrl) {
     if (question.questionType == "1") {
       return MultipleChoiceQuestionWidget(
         examId: widget.examId,
         question: question,
+        baseUrl: baseUrl,
       );
     } else if (question.questionType == "2") {
       //change the value of the multiChoiceQuestionAnswer variable
       return TrueFalseQuestionWidget(
         examId: widget.examId,
         question: question,
+        baseUrl: baseUrl,
       );
     } else if (question.questionType == "3") {
       return TextQuestionWidget(
         examId: widget.examId,
         question: question,
+        baseUrl: baseUrl,
       );
     }
     return Container();

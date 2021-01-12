@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/ExamQuestionReviewModel.dart';
@@ -22,7 +23,6 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -74,7 +74,7 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
                   color: Colors.grey[900],
                   child: Text("لا يوجد اسئلة"),
                 )
-              : examQuestionLoadedBody(state.list[0]);
+              : examQuestionLoadedBody(state.list[0], state.baseUrl);
         } else if (state is ExamReviewPageError) {
           Container(
             width: double.infinity,
@@ -88,7 +88,8 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
     );
   }
 
-  Padding examQuestionLoadedBody(ExamQuestionReviewModel question) {
+  Padding examQuestionLoadedBody(
+      ExamQuestionReviewModel question, String baseUrl) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -184,9 +185,18 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
           SizedBox(
             height: 20,
           ),
+
+          question.qPhoto == null
+              ? Container()
+              : CachedNetworkImage(
+                  imageUrl: "http://${baseUrl}/${question.qPhoto}",
+                  placeholder: (context, url) =>
+                      new CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                ),
+
           //if
           answerWidget(question),
-          // Image.network(""),
           question.rightAnswer == null
               ? Container()
               : SizedBox(

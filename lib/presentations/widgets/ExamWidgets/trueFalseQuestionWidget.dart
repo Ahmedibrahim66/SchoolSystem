@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/examSubmissionPage/bloc/exam_submission_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TrueFalseQuestionWidget extends StatefulWidget {
   final ExamQuestionAnswerModel question;
   final int examId;
+  final String baseUrl;
 
-  const TrueFalseQuestionWidget({Key key, this.question, this.examId})
+  const TrueFalseQuestionWidget(
+      {Key key, this.question, this.examId, this.baseUrl})
       : super(key: key);
 
   @override
@@ -18,7 +21,6 @@ class TrueFalseQuestionWidget extends StatefulWidget {
 
 class _TrueFalseQuestionWidgetState extends State<TrueFalseQuestionWidget> {
   String trueFalseQuestionAnswer = "";
-
   @override
   void initState() {
     if (widget.question.studentAnswer == "T") trueFalseQuestionAnswer = "صح";
@@ -101,12 +103,13 @@ class _TrueFalseQuestionWidgetState extends State<TrueFalseQuestionWidget> {
           SizedBox(
             height: 10,
           ),
-
           SizedBox(
             height: 20,
           ),
-
-          // Image.network(""),
+          widget.question.qPhoto == null
+              ? Container()
+              : Image.network(
+                  "http://${widget.baseUrl}/${widget.question.qPhoto}"),
           widget.question.rightAnswer == null
               ? Container()
               : SizedBox(

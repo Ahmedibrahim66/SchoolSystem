@@ -205,7 +205,7 @@ class _NewStudentMarksPageState extends State<NewStudentMarksPage> {
 
   Widget lowerBody(StudentmarksState state) {
     if (state is StudentDailyMarksState) {
-      return Container(width: 400, child: NewStudentDailyMarks());
+      return Container(width: double.infinity, child: NewStudentDailyMarks());
     }
 
     if (state is StudentQuarterMarksState) {

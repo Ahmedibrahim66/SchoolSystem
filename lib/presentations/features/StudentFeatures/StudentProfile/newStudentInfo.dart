@@ -29,85 +29,91 @@ class _NewStudentInfoState extends State<NewStudentInfo> {
     return BlocBuilder<StudentprofilenavigationBloc,
         StudentprofilenavigationState>(builder: (context, state) {
       changeStatusBarColor();
-      return Scaffold(
-          appBar: AppBar(
-            leading: GestureDetector(
-                onTap: () {
-                  if (state is StudentProfileIDState)
-                    BlocProvider.of<StudentInfoBloc>(context)
-                        .add(FetchStudentInfo());
+      return Container(
+        color: Colors.white,
+        child: SafeArea(
+          child: Scaffold(
+              appBar: AppBar(
+                leading: GestureDetector(
+                    onTap: () {
+                      if (state is StudentProfileIDState)
+                        BlocProvider.of<StudentInfoBloc>(context)
+                            .add(FetchStudentInfo());
 
-                  if (state is StudentProfileAbsenceState)
-                    BlocProvider.of<StudentAttendenceBloc>(context)
-                        .add(FetchStudentAbsence());
+                      if (state is StudentProfileAbsenceState)
+                        BlocProvider.of<StudentAttendenceBloc>(context)
+                            .add(FetchStudentAbsence());
 
-                  if (state is StudentProfileBehavoirState)
-                    BlocProvider.of<StudentBehaviourBloc>(context)
-                        .add(FetchStudentBehaviour());
+                      if (state is StudentProfileBehavoirState)
+                        BlocProvider.of<StudentBehaviourBloc>(context)
+                            .add(FetchStudentBehaviour());
 
-                  if (state is StudentProfileLateState)
-                    BlocProvider.of<StudentlateBloc>(context)
-                        .add(FetchStudentLate());
+                      if (state is StudentProfileLateState)
+                        BlocProvider.of<StudentlateBloc>(context)
+                            .add(FetchStudentLate());
 
-                  if (state is StudentProfileHealthState)
-                    BlocProvider.of<StudentHealthBloc>(context)
-                        .add(FetchStudentHealth());
-                },
-                child: Icon(Icons.refresh)),
-            elevation: 0,
-            backgroundColor: AppThemeData().primaryColor,
-            centerTitle: true,
-            title: Text(
-              "GT Series",
-              style:
-                  AppThemeData().lexendDecaText.copyWith(color: Colors.white),
-            ),
-          ),
-          endDrawer: StudentNavigationDrawer(),
-          backgroundColor: Colors.white,
-          body: Stack(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      color: AppThemeData().primaryColor,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.white,
-                    ),
-                  )
-                ],
+                      if (state is StudentProfileHealthState)
+                        BlocProvider.of<StudentHealthBloc>(context)
+                            .add(FetchStudentHealth());
+                    },
+                    child: Icon(Icons.refresh)),
+                elevation: 0,
+                backgroundColor: AppThemeData().primaryColor,
+                centerTitle: true,
+                title: Text(
+                  "GT Series",
+                  style: AppThemeData()
+                      .lexendDecaText
+                      .copyWith(color: Colors.white),
+                ),
               ),
-              Column(
+              endDrawer: StudentNavigationDrawer(),
+              backgroundColor: Colors.white,
+              body: Stack(
                 children: [
-                  Expanded(
-                      flex: 6,
-                      child: Container(
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(70)),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
                           color: AppThemeData().primaryColor,
                         ),
-                        child: upperBody(state),
-                      )),
-                  Container(
-                    height: 100,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(70)),
-                      color: Colors.white,
-                    ),
-                    child: lowerBody(),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Expanded(
+                          flex: 6,
+                          child: Container(
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(70)),
+                              color: AppThemeData().primaryColor,
+                            ),
+                            child: upperBody(state),
+                          )),
+                      Container(
+                        height: 100,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.only(topLeft: Radius.circular(70)),
+                          color: Colors.white,
+                        ),
+                        child: lowerBody(),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          ));
+              )),
+        ),
+      );
     });
   }
 

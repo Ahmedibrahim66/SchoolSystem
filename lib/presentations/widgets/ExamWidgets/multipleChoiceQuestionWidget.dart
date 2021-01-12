@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
@@ -7,8 +8,10 @@ import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/e
 class MultipleChoiceQuestionWidget extends StatefulWidget {
   final ExamQuestionAnswerModel question;
   final int examId;
+  final String baseUrl;
 
-  const MultipleChoiceQuestionWidget({Key key, this.question, this.examId})
+  const MultipleChoiceQuestionWidget(
+      {Key key, this.question, this.examId, this.baseUrl})
       : super(key: key);
 
   @override
@@ -19,7 +22,6 @@ class MultipleChoiceQuestionWidget extends StatefulWidget {
 class _MultipleChoiceQuestionWidgetState
     extends State<MultipleChoiceQuestionWidget> {
   String multiChoiceQuestionAnswer = "";
-
   @override
   void initState() {
     if (widget.question.studentAnswer == "1")
@@ -32,6 +34,7 @@ class _MultipleChoiceQuestionWidgetState
       multiChoiceQuestionAnswer = widget.question.answer4;
     if (widget.question.studentAnswer == "5")
       multiChoiceQuestionAnswer = widget.question.answer5;
+
     super.initState();
   }
 
@@ -110,12 +113,18 @@ class _MultipleChoiceQuestionWidgetState
           SizedBox(
             height: 10,
           ),
-
           SizedBox(
             height: 20,
           ),
-
-          // Image.network(""),
+          widget.question.qPhoto == null
+              ? Container()
+              : CachedNetworkImage(
+                  imageUrl:
+                      "http://${widget.baseUrl}/${widget.question.qPhoto}",
+                  placeholder: (context, url) =>
+                      new CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                ),
           widget.question.rightAnswer == null
               ? Container()
               : SizedBox(

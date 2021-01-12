@@ -24,10 +24,15 @@ class ExamSubmissionBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
+
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         final List<ExamQuestionAnswerModel> list =
             await repository.showStudentExam(token, userId, event.examId);
 
-        yield ExamSubmissionPageLoaded(list: list);
+        yield ExamSubmissionPageLoaded(list: list, baseUrl: baseUrl);
       } catch (e) {
         print(e.toString());
         yield ExamSubmissionPageError();
@@ -40,11 +45,16 @@ class ExamSubmissionBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
+
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         final List<ExamQuestionAnswerModel> list =
             await repository.showSelectedQuestion(
                 token, userId, event.examId, event.nextQuestion);
 
-        yield ExamSubmissionPageLoaded(list: list);
+        yield ExamSubmissionPageLoaded(list: list, baseUrl: baseUrl);
       } catch (e) {
         print(e.toString());
         yield ExamSubmissionPageError();
@@ -57,11 +67,15 @@ class ExamSubmissionBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         final List<ExamQuestionAnswerModel> list =
             await repository.showSelectedQuestion(
                 token, userId, event.examId, event.nextQuestion);
 
-        yield ExamSubmissionPageLoaded(list: list);
+        yield ExamSubmissionPageLoaded(list: list, baseUrl: baseUrl);
       } catch (e) {
         print(e.toString());
         yield ExamSubmissionPageError();
@@ -74,6 +88,11 @@ class ExamSubmissionBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
+
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         String submission = await repository.submitQuestionAnswer(
             token,
             userId,
@@ -82,7 +101,7 @@ class ExamSubmissionBloc
             event.answer,
             event.isEnd);
         if (event.isEnd == "E") {
-          //exam is finished wait for view pop 
+          //exam is finished wait for view pop
           yield ExamSubmissionPageLoading();
         } else {
           if (submission == "Right") {
@@ -90,9 +109,9 @@ class ExamSubmissionBloc
             final List<ExamQuestionAnswerModel> list =
                 await repository.showSelectedQuestion(
                     token, userId, event.examId, int.parse(event.nextQeustion));
-            yield ExamSubmissionPageLoaded(list: list);
+            yield ExamSubmissionPageLoaded(list: list, baseUrl: baseUrl);
           } else {
-            //submission is wrong 
+            //submission is wrong
             yield ExamSubmissionPageError();
           }
         }

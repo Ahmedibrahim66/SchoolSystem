@@ -7,8 +7,8 @@ import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/e
 class TextQuestionWidget extends StatefulWidget {
   final ExamQuestionAnswerModel question;
   final int examId;
-
-  const TextQuestionWidget({Key key, this.question, this.examId})
+  final String baseUrl;
+  const TextQuestionWidget({Key key, this.question, this.examId, this.baseUrl})
       : super(key: key);
 
   @override
@@ -102,12 +102,13 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget> {
           SizedBox(
             height: 10,
           ),
-
           SizedBox(
             height: 20,
           ),
-
-          // Image.network(""),
+          widget.question.qPhoto == null
+              ? Container()
+              : Image.network(
+                  "http://${widget.baseUrl}/${widget.question.qPhoto}"),
           widget.question.rightAnswer == null
               ? Container()
               : SizedBox(

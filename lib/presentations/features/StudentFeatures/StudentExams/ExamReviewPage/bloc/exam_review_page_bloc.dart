@@ -26,10 +26,15 @@ class ExamReviewPageBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
+
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         final List<ExamQuestionReviewModel> list = await repository
             .enterStudentExamReview(token, userId, event.examId);
 
-        yield ExamReviewPageLoaded(list: list);
+        yield ExamReviewPageLoaded(list: list, baseUrl: baseUrl);
       } catch (e) {
         print(e.toString());
         yield ExamReviewPageError();
@@ -42,12 +47,16 @@ class ExamReviewPageBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
-        print("bloc is ${event.examId} and ${event.nextQuestion}");
+
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         final List<ExamQuestionReviewModel> list =
             await repository.getStudentExamReviewQuestion(
                 token, userId, event.examId, event.nextQuestion);
 
-        yield ExamReviewPageLoaded(list: list);
+        yield ExamReviewPageLoaded(list: list, baseUrl: baseUrl);
       } catch (e) {
         print(e.toString());
         yield ExamReviewPageError();
@@ -60,12 +69,17 @@ class ExamReviewPageBloc
         SharedPreferences preferences = await SharedPreferences.getInstance();
         String token = preferences.getString('userToken');
         String userId = preferences.getString('userId');
+
+        //TODO:: remove the set string and added to the choose school page
+        await preferences.setString("baseURL", "gtseries.net/uploads");
+        String baseUrl = preferences.getString("baseURL");
+
         print("bloc is ${event.examId} and ${event.nextQuestion}");
         final List<ExamQuestionReviewModel> list =
             await repository.getStudentExamReviewQuestion(
                 token, userId, event.examId, event.nextQuestion);
 
-        yield ExamReviewPageLoaded(list: list);
+        yield ExamReviewPageLoaded(list: list, baseUrl: baseUrl);
       } catch (e) {
         print(e.toString());
         yield ExamReviewPageError();
