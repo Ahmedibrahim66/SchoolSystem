@@ -5,6 +5,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/ExamQuestionReviewModel.dar
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/ExamReviewPage/bloc/exam_review_page_bloc.dart';
 import 'package:mustafa0_1/presentations/widgets/LoadingAnimation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ExamReviewPage extends StatefulWidget {
   final int examId;
@@ -386,6 +387,10 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
               SizedBox(
                 height: 20,
               ),
+              fileRow(question.fileUrl),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),
@@ -551,6 +556,35 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
               ],
             ),
           );
+  }
+
+  Widget fileRow(String name) {
+    return Container(
+      child: Row(
+        children: [
+          Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                //TODO :: change this to dynamic url
+                launch('http://portal.gtseries.net/uploads/${name}');
+              },
+              child: Text(
+                name,
+                style: TextStyle(color: Colors.white),
+                overflow: TextOverflow.clip,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   inputdecoration(String labelText, String hintText) {

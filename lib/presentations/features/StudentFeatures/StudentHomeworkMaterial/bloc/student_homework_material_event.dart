@@ -6,11 +6,16 @@ abstract class StudentHomeworkMaterialEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-class FetchStudentHomeworkMaterial extends StudentHomeworkMaterialEvent {
 
+class FetchStudentHomeworkMaterial extends StudentHomeworkMaterialEvent {
   FetchStudentHomeworkMaterial();
 
   @override
   List<Object> get props => [];
+}
 
+class ViewHomeworkSubmission extends StudentHomeworkMaterialEvent {
+  final String homewrokSeq;
+
+  ViewHomeworkSubmission(this.homewrokSeq); 
 }

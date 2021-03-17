@@ -10,15 +10,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'student_homework_material_event.dart';
 part 'student_homework_material_state.dart';
 
-class StudentHomeworkMaterialBloc extends Bloc<StudentHomeworkMaterialEvent, StudentHomeworkMaterialState> {
-  StudentHomeworkMaterialBloc(this.repository) : super(StudentHomeworkMaterialInitial());
+class StudentHomeworkMaterialBloc
+    extends Bloc<StudentHomeworkMaterialEvent, StudentHomeworkMaterialState> {
+  StudentHomeworkMaterialBloc(this.repository)
+      : super(StudentHomeworkMaterialInitial());
   final StudentRepository repository;
 
   @override
   Stream<StudentHomeworkMaterialState> mapEventToState(
     StudentHomeworkMaterialEvent event,
   ) async* {
-      if (event is FetchStudentHomeworkMaterial) {
+    if (event is FetchStudentHomeworkMaterial) {
       yield StudentHomeworkMaterialLoading();
       try {
         SharedPreferences preferences = await SharedPreferences.getInstance();

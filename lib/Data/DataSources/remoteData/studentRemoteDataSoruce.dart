@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
@@ -14,6 +15,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialSubmission.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
@@ -26,6 +28,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/chatModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
 
 import 'package:mustafa0_1/Domain/repositories/studentRepository.dart';
+import 'package:path/path.dart';
 
 class StudentRemoteDataSource implements StudentRepository {
   @override
@@ -351,7 +354,6 @@ class StudentRemoteDataSource implements StudentRepository {
         list.add(StudentLearningMaterialModel.fromJson(learn));
       }
 
-
       return list;
     } catch (e) {
       //handel excpetion later
@@ -444,11 +446,10 @@ class StudentRemoteDataSource implements StudentRepository {
     try {
       //to send chat you need to send a get requset with the message to the server
       // ignore: unused_local_variable
-      Response response 
-      = await get(
+      Response response = await get(
           '$mainURL/send_message/?token=$token&Student_No=$userId&Chat_Room_Id=$chatRoomId&Message=$message');
     } catch (e) {
-      //usually there should not be any error unless its from the servr 
+      //usually there should not be any error unless its from the servr
       print(e.toString());
     }
   }
@@ -562,33 +563,80 @@ class StudentRemoteDataSource implements StudentRepository {
 
   @override
   Future<String> submitQuestionAnswer(String token, String userId, int examId,
-      int questionSeq, String selectedAnswer, String isEnd) async {
+      int questionSeq, String selectedAnswer, String isEnd, File file) async {
     String mainURL = "http://portal.gtseries.net/School_API/";
 
     print(
         "$token + $userId  + $examId + $questionSeq + $selectedAnswer + $isEnd ");
 
-    try {
-      Response response = await get(
-          '$mainURL/submit_question_answer/?token=$token&Student_No=$userId&Exam_Seq=$examId&Question_Seq=$questionSeq&Selected_Answer=$selectedAnswer&Is_End=$isEnd');
+    if (file == null) {
+      //No file is attached make normal request
+      try {
+        Response response = await get(
+            '$mainURL/submit_question_answer/?token=$token&Student_No=$userId&Exam_Seq=$examId&Question_Seq=$questionSeq&Selected_Answer=$selectedAnswer&Is_End=$isEnd');
 
-      String data = response.body;
-      print("data is" + data.toString());
+        String data = response.body;
+        print("data is" + data.toString());
 
-      return data;
-    } catch (e) {
-      //handel excpetion later
-      print("error is " + e.toString());
-      return null;
+        return data;
+      } catch (e) {
+        //handel excpetion later
+        print("error is " + e.toString());
+        return null;
+      }
+    } else {
+      //File is attached make multipart request to upload the file
+      try {
+        var request = MultipartRequest(
+          'POST',
+          Uri.parse("$mainURL/submit_question_answer_text"),
+        );
+
+        Map<String, String> headers;
+
+        //create headers
+        headers = {"Content-type": "multipart/form-data"};
+
+        request.files.add(
+          MultipartFile(
+            'File_Url',
+            file.readAsBytes().asStream(),
+            file.lengthSync(),
+            filename: basename(file.path),
+            //contentType: MediaType('image', 'jpeg'),
+          ),
+        );
+
+        //add file
+        request.fields['token'] = token;
+        request.fields['Student_No'] = userId;
+        request.fields['Exam_Seq'] = examId.toString();
+        request.fields['Question_Seq'] = questionSeq.toString();
+        request.fields['Selected_Answer'] = selectedAnswer;
+        request.fields['Is_End'] = isEnd;
+
+        //add hedaer
+        request.headers.addAll(headers);
+
+        final response = await request.send();
+        final String respStr = await response.stream.bytesToString();
+        print("tes");
+        print(respStr);
+
+        return respStr;
+      } catch (e) {
+        print(e.toString());
+        return null;
+      }
     }
   }
 
   @override
   Future<List<ZoomLinkModel>> getZoomLinks(String token, String userId) async {
-     String mainURL = "http://portal.gtseries.net/School_API/";
+    String mainURL = "http://portal.gtseries.net/School_API/";
     try {
-      Response response = await get(
-          '$mainURL/zoom_meetings/?token=$token&Student_No=$userId');
+      Response response =
+          await get('$mainURL/zoom_meetings/?token=$token&Student_No=$userId');
 
       List data = jsonDecode(response.body);
       List<ZoomLinkModel> list = [];
@@ -604,8 +652,9 @@ class StudentRemoteDataSource implements StudentRepository {
   }
 
   @override
-  Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(String token, String userId) async {
-     String mainURL = "http://portal.gtseries.net/School_API/";
+  Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(
+      String token, String userId) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
     try {
       Response response = await get(
           '$mainURL/Students_Homework_Material/?token=$token&Student_No=$userId');
@@ -618,6 +667,131 @@ class StudentRemoteDataSource implements StudentRepository {
       print(data);
       return list;
     } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> submitHomeWork(
+      String token, String studentNumber, String seq, List<File> files) async {
+    int fileSeq = await getCurrentFileSeq(token, studentNumber);
+    bool uploaded = await uploadFiles(token, fileSeq, files);
+    String url =
+        "http://portal.gtseries.net/School_Api/addstudents_learning_material_file";
+
+    print(uploaded);
+    if (uploaded) {
+      try {
+        Response response = await post(
+          url,
+          body: jsonEncode(<String, dynamic>{
+            'token': token,
+            'Current_Homework_Seq': seq,
+            'Current_File_Temp_Seq': fileSeq,
+          }),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        );
+
+        //check if response succeeded
+        dynamic data = response.body;
+        print("data is $data");
+        if (data == "success")
+          return true;
+        else
+          return false;
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    } else
+      return false;
+  }
+
+  Future<int> getCurrentFileSeq(String token, String studentNumber) async {
+    String mainUrl =
+        "http://portal.gtseries.net/School_Api/last_temp_file_seq/?token=$token&Student_No=$studentNumber";
+    try {
+      Response response = await get(
+          '$mainUrl//last_temp_file_seq/?token=$token&Student_No=$studentNumber');
+
+      Map data = jsonDecode(response.body);
+
+      print("getCurrentFileSeq $data ");
+      return data["Current_File_Temp_Seq"];
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<bool> uploadFiles(
+      String token, int currentSeq, List<File> files) async {
+    String mainUrl = "http://portal.gtseries.net/School_Api/save_temp_files";
+    try {
+      var request = MultipartRequest(
+        'POST',
+        Uri.parse(mainUrl),
+      );
+
+      Map<String, String> headers;
+
+      //create headers
+      headers = {"Content-type": "multipart/form-data"};
+
+      for (int i = 0; i < files.length; i++) {
+        //create file
+        request.files.add(
+          MultipartFile(
+            'myfile[]',
+            files[i].readAsBytes().asStream(),
+            files[i].lengthSync(),
+            filename: basename(files[i].path),
+            //contentType: MediaType('image', 'jpeg'),
+          ),
+        );
+      }
+
+      //add file
+      request.fields['token'] = token;
+      request.fields['File_Current_Seq'] = currentSeq.toString();
+
+      //({'token': token, 'File_Current_Seq': currentSeq});
+
+      //add hedaer
+      request.headers.addAll(headers);
+
+      final response = await request.send();
+      final respStr = await response.stream.bytesToString();
+
+      print(respStr);
+      //asume its true
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  @override
+  Future<List<StudentHomeworkMaterialSubmission>>
+      getStudentHomeworkMaterialSubmissions(
+          String token, String userId, String seq) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/Students_Homework_Files/?token=$token&Student_No=$userId&Seq=$seq');
+      List data = jsonDecode(response.body);
+      List<StudentHomeworkMaterialSubmission> list = [];
+      for (dynamic examList in data) {
+        list.add(StudentHomeworkMaterialSubmission.fromJson(examList));
+      }
+      print(data);
+      return list;
+    } catch (e) {
+      //handel excpetion later
       print(e);
       return null;
     }

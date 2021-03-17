@@ -19,26 +19,27 @@ class StudentLearningMaterialModel {
   String insUser;
   String insTimeDate;
 
-  StudentLearningMaterialModel(
-      {this.teacherName,
-      this.classDesc,
-      this.sectionSymbol,
-      this.subjectDesc,
-      this.studYear,
-      this.classNo,
-      this.sectionNo,
-      this.subjectNo,
-      this.employeeNo,
-      this.seq,
-      this.materialDesc,
-      this.linkUrl,
-      this.filePath,
-      this.fileDesc,
-      this.groupId,
-      this.isACTIVE,
-      this.insTime,
-      this.insUser,
-      this.insTimeDate});
+  StudentLearningMaterialModel({
+    this.teacherName,
+    this.classDesc,
+    this.sectionSymbol,
+    this.subjectDesc,
+    this.studYear,
+    this.classNo,
+    this.sectionNo,
+    this.subjectNo,
+    this.employeeNo,
+    this.seq,
+    this.materialDesc,
+    this.linkUrl,
+    this.filePath,
+    this.fileDesc,
+    this.groupId,
+    this.isACTIVE,
+    this.insTime,
+    this.insUser,
+    this.insTimeDate,
+  });
 
   StudentLearningMaterialModel.fromJson(Map<String, dynamic> json) {
     teacherName = json['Teacher_Name'];
@@ -61,6 +62,4 @@ class StudentLearningMaterialModel {
     insUser = json['Ins_User'];
     insTimeDate = json['Ins_Time_Date'];
   }
-
- 
 }

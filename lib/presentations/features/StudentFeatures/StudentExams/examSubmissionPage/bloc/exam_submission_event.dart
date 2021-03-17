@@ -41,8 +41,9 @@ class SubmitExamQuestionAnswer extends ExamSubmissionEvent {
   final String answer;
   final String isEnd;
   final String nextQeustion;
-
-  SubmitExamQuestionAnswer(this.examId, this.answer, this.questionId, this.isEnd, this.nextQeustion);
+  final File file;
+  SubmitExamQuestionAnswer(this.examId, this.answer, this.questionId,
+      this.isEnd, this.nextQeustion, this.file);
 
   @override
   List<Object> get props => [];

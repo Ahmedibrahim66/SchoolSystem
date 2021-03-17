@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -5,7 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/navigationDrawer.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeWrokSubmissions/StudentHomeworkSubmissions.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeWrokSubmissions/bloc/view_submission_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeworkMaterial/bloc/student_homework_material_bloc.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/UploadFilePage/bloc/upload_file_bloc.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/UploadFilePage/uploadFilePage.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentHomeworkMaterial extends StatefulWidget {
@@ -17,35 +23,60 @@ class StudentHomeworkMaterial extends StatefulWidget {
 class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StudentHomeworkMaterialBloc,
-        StudentHomeworkMaterialState>(builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          leading: GestureDetector(
-              onTap: () {
-                BlocProvider.of<StudentHomeworkMaterialBloc>(context)
-                    .add(FetchStudentHomeworkMaterial());
-              },
-              child: Icon(Icons.refresh)),
-          elevation: 0,
-          backgroundColor: AppThemeData().primaryColor,
-          centerTitle: true,
-          title: Text(
-            "GT Series",
-            style: AppThemeData().lexendDecaText.copyWith(color: Colors.white),
+    return BlocListener<StudentHomeworkMaterialBloc,
+        StudentHomeworkMaterialState>(
+      listener: (context, state) {},
+      child: BlocBuilder<StudentHomeworkMaterialBloc,
+          StudentHomeworkMaterialState>(builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: GestureDetector(
+                onTap: () {
+                  BlocProvider.of<StudentHomeworkMaterialBloc>(context)
+                      .add(FetchStudentHomeworkMaterial());
+                },
+                child: Icon(Icons.refresh)),
+            elevation: 0,
+            backgroundColor: AppThemeData().primaryColor,
+            centerTitle: true,
+            title: Text(
+              "GT Series",
+              style:
+                  AppThemeData().lexendDecaText.copyWith(color: Colors.white),
+            ),
           ),
-        ),
-        endDrawer: StudentNavigationDrawer(),
-        backgroundColor: AppThemeData().primaryColor,
-        body: body(state),
-      );
-    });
+          endDrawer: StudentNavigationDrawer(),
+          backgroundColor: AppThemeData().primaryColor,
+          body: body(state),
+        );
+      }),
+    );
   }
 
   Widget body(StudentHomeworkMaterialState state) {
     if (state is StudentHomeworkMaterialInitial) {
       BlocProvider.of<StudentHomeworkMaterialBloc>(context)
           .add(FetchStudentHomeworkMaterial());
+    }
+
+    if (state is StudentHomeworkMaterialError) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.grey[900],
+        child: Text("فشل في الاتصال"),
+      );
+    }
+    if (state is StudentHomeworkMaterialLoading) {
+      return Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - 56,
+          child: Center(
+            child: SpinKitFadingCube(
+              color: Colors.white,
+              size: 80.0,
+            ),
+          ));
     }
     if (state is StudentHomeworkMaterialLoaded) {
       return Container(
@@ -60,24 +91,6 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
             ],
           ));
     }
-    if (state is StudentHomeworkMaterialError) {
-      return Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.grey[900],
-        child: Text("فشل في الاتصال"),
-      );
-    }
-
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height - 56,
-        child: Center(
-          child: SpinKitFadingCube(
-            color: Colors.white,
-            size: 80.0,
-          ),
-        ));
   }
 
   Widget learningMaterialBody(StudentHomeworkMaterialLoaded state) {
@@ -96,7 +109,6 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
           )),
           SizedBox(
             height: 30,
-            
           ),
           Container(
               width: MediaQuery.of(context).size.width / 4,
@@ -296,7 +308,9 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                           } catch (e) {}
                         },
                         child: Text(
-                          list.linkUrl == null ? "لا يوجد وصلات خارجية" : "${list.linkUrl}",
+                          list.linkUrl == null
+                              ? "لا يوجد وصلات خارجية"
+                              : "${list.linkUrl}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),
@@ -307,8 +321,7 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                     SizedBox(
                       height: 20,
                     ),
-
-                      Container(
+                    Container(
                       child: Text(
                         "الملف المرفق",
                         style: AppThemeData()
@@ -325,7 +338,9 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                           } catch (e) {}
                         },
                         child: Text(
-                          list.fileDesc == null ? "لا يوجد ملف" : "${list.fileDesc}",
+                          list.fileDesc == null
+                              ? "لا يوجد ملف"
+                              : "http://portal.gtseries.net/uploads/${list.filePath}",
                           style: AppThemeData()
                               .tajwalText
                               .copyWith(color: Colors.black, fontSize: 16),
@@ -336,8 +351,6 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                     SizedBox(
                       height: 20,
                     ),
-
-
                     Container(
                       child: Text(
                         "تسليم الوظيفة",
@@ -347,26 +360,66 @@ class _StudentHomeworkMaterialState extends State<StudentHomeworkMaterial> {
                         textDirection: TextDirection.rtl,
                       ),
                     ),
-                    Container(
-                      child: InkWell(
-                        onTap: () {
-                          try {
-                            launch(list.filePath);
-                          } catch (e) {}
-                        },
-                        child: Text(
-                          list.filePath == null ? "لا يوجد تسليم" : "${list.filePath}",
-                          style: AppThemeData()
-                              .tajwalText
-                              .copyWith(color: Colors.black, fontSize: 16),
-                          textDirection: TextDirection.rtl,
-                        ),
-                      ),
-                    ),
+                    list.homeworkFileDesc == null
+                        ? Text(
+                            "لا يوجد تسليم",
+                            style: AppThemeData()
+                                .tajwalText
+                                .copyWith(color: Colors.black, fontSize: 16),
+                            textDirection: TextDirection.rtl,
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              //launch(list.filePath);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BlocProvider(
+                                          create: (context) =>
+                                              ViewSubmissionBloc(),
+                                          child:
+                                              StudentHomeworkMaterialSubmssions(
+                                            homeSeq: list.seq.toString(),
+                                          ))));
+                              // BlocProvider.of<StudentHomeworkMaterialBloc>(
+                              //         context)
+                              //     .add(ViewHomeworkSubmission(
+                              //         list.seq.toString()));
+                            },
+                            child: Container(
+                                height: 50,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    color: AppThemeData().secondaryColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(child: Text("مشاهدة التسليم"))),
+                          ),
                     SizedBox(
                       height: 20,
                     ),
-
+                    list.canUpload == "N"
+                        ? Container()
+                        : GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BlocProvider(
+                                          create: (context) => UploadFileBloc(),
+                                          child: UploadFilePageUI(
+                                            homeworkSeq: list.seq,
+                                          ))));
+                            },
+                            child: Container(
+                                height: 50,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    color: AppThemeData().secondaryColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(child: Text("رفع ملف")))),
+                    SizedBox(
+                      height: 20,
+                    ),
                   ],
                 ),
               ],

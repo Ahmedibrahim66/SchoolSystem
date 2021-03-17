@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/examQuestionAnswerModel.dart';
 import 'package:mustafa0_1/Theme/AppThemeData.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/examSubmissionPage/bloc/exam_submission_bloc.dart';
+import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TextQuestionWidget extends StatefulWidget {
   final ExamQuestionAnswerModel question;
@@ -20,10 +26,16 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget> {
   TextEditingController textFieldQuestionAnswerController =
       TextEditingController();
 
+  File file;
+  List<String> _paths = [];
+  FileType _pickingType = FileType.any;
+
   @override
   void initState() {
     print(widget.question.textAnswer);
     textFieldQuestionAnswerController.text = widget.question.textAnswer;
+    _paths.add(widget.question.fileUrl);
+    print(_paths[0]);
     super.initState();
   }
 
@@ -152,7 +164,57 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget> {
           SizedBox(
             height: 20,
           ),
-          moveToNextQuestionButton(widget.question),
+          widget.question.fileUrl == null
+              ? _paths.length == 0
+                  ? ElevatedButton(
+                      onPressed: () =>
+                          {_pickingType = FileType.any, _openFileExplorer()},
+                      child: const Text("رفع ملف"),
+                    )
+                  : fileRow(_paths[0], 0)
+              : fileRow(widget.question.fileUrl, 0),
+          SizedBox(
+            height: 20,
+          ),
+          moveToNextQuestionButton(context, widget.question),
+        ],
+      ),
+    );
+  }
+
+  Widget fileRow(String name, int index) {
+    return Container(
+      child: Row(
+        children: [
+          GestureDetector(
+              onTap: () {
+                _paths.removeAt(index);
+                setState(() {
+                  widget.question.fileUrl = null;
+                });
+              },
+              child: Icon(
+                Icons.cancel,
+                color: Colors.white,
+              )),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                //if no file is selected -> user can see the uploaded file
+                if (file == null)
+                  launch(
+                      'http://portal.gtseries.net/uploads/${widget.question.fileUrl}');
+              },
+              child: Text(
+                name,
+                style: TextStyle(color: Colors.white),
+                overflow: TextOverflow.clip,
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -183,61 +245,6 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget> {
             ),
           ),
         ),
-        // Container(
-        //   decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(10),
-        //       color: AppThemeData().thirdColor),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.end,
-        //     children: [
-        //       SizedBox(
-        //         height: 20,
-        //       ),
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.end,
-        //         children: [
-        //           Container(
-        //             child: Text(
-        //               "ملاحظات المعلم",
-        //               style: AppThemeData()
-        //                   .tajwalText
-        //                   .copyWith(color: Colors.white, fontSize: 16),
-        //             ),
-        //           ),
-        //           SizedBox(
-        //             width: 20,
-        //           ),
-        //         ],
-        //       ),
-        //       SizedBox(
-        //         height: 20,
-        //       ),
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.end,
-        //         children: [
-        //           Expanded(
-        //             child: Text(
-        //               question.teacherRemarks == null
-        //                   ? ""
-        //                   : question.teacherRemarks,
-        //               textAlign: TextAlign.right,
-        //               textDirection: TextDirection.rtl,
-        //               style: AppThemeData()
-        //                   .tajwalText
-        //                   .copyWith(color: Colors.white, fontSize: 16),
-        //             ),
-        //           ),
-        //           SizedBox(
-        //             width: 20,
-        //           ),
-        //         ],
-        //       ),
-        //       SizedBox(
-        //         height: 20,
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -278,26 +285,44 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget> {
     );
   }
 
-  Widget moveToNextQuestionButton(ExamQuestionAnswerModel question) {
+  Widget moveToNextQuestionButton(
+      BuildContext context, ExamQuestionAnswerModel question) {
     return GestureDetector(
       onTap: () {
         if (question.nextQ == "") {
           //we are on the last question pop view
 
-          String answer = textFieldQuestionAnswerController.text;
+          String answer = textFieldQuestionAnswerController.text.isEmpty
+              ? "."
+              : textFieldQuestionAnswerController.text;
 
+          print(answer);
           BlocProvider.of<ExamSubmissionBloc>(context).add(
-              SubmitExamQuestionAnswer(widget.examId, answer,
-                  widget.question.seq.toString(), "E", widget.question.nextQ));
+              SubmitExamQuestionAnswer(
+                  widget.examId,
+                  answer,
+                  widget.question.seq.toString(),
+                  "E",
+                  widget.question.nextQ,
+                  file));
 
           Navigator.pop(context);
         } else {
           // there is still question left go to next quesion
-          String answer = textFieldQuestionAnswerController.text;
+
+          String answer = textFieldQuestionAnswerController.text.isEmpty
+              ? "."
+              : textFieldQuestionAnswerController.text;
+          print(answer);
 
           BlocProvider.of<ExamSubmissionBloc>(context).add(
-              SubmitExamQuestionAnswer(widget.examId, answer.toString(),
-                  widget.question.seq.toString(), "N", widget.question.nextQ));
+              SubmitExamQuestionAnswer(
+                  widget.examId,
+                  answer.toString(),
+                  widget.question.seq.toString(),
+                  "N",
+                  widget.question.nextQ,
+                  file));
         }
       },
       child: Container(
@@ -320,5 +345,27 @@ class _TextQuestionWidgetState extends State<TextQuestionWidget> {
             ),
           ))),
     );
+  }
+
+  void _openFileExplorer() async {
+    try {
+      FilePickerResult result = await FilePicker.platform
+          .pickFiles(type: _pickingType, allowMultiple: false);
+
+      if (result != null) {
+        file = File(result.files.single.path);
+        _paths.add(basename(file.path));
+        setState(() {});
+      } else {
+        // User canceled the picker
+        print("null result");
+      }
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    } catch (ex) {
+      print(ex);
+    }
+
+    if (!mounted) return;
   }
 }

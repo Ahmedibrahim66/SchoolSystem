@@ -26,35 +26,42 @@ class StudentsHomeworkMaterialModel {
   String studentUser;
   String studentDeliverTime;
   String studentGrade;
+  String homeworkFileDesc;
+  String homeworkFileUrl;
+  String canUpload;
 
-  StudentsHomeworkMaterialModel(
-      {this.teacherName,
-      this.classDesc,
-      this.sectionSymbol,
-      this.subjectDesc,
-      this.studYear,
-      this.classNo,
-      this.sectionNo,
-      this.subjectNo,
-      this.employeeNo,
-      this.seq,
-      this.materialDesc,
-      this.linkUrl,
-      this.filePath,
-      this.fileDesc,
-      this.groupId,
-      this.highMark,
-      this.handDate,
-      this.handDate2,
-      this.quartNo,
-      this.isACTIVE,
-      this.insTime,
-      this.insUser,
-      this.studentFilePath,
-      this.studentFileDesc,
-      this.studentUser,
-      this.studentDeliverTime,
-      this.studentGrade});
+  StudentsHomeworkMaterialModel({
+    this.teacherName,
+    this.classDesc,
+    this.sectionSymbol,
+    this.subjectDesc,
+    this.studYear,
+    this.classNo,
+    this.sectionNo,
+    this.subjectNo,
+    this.employeeNo,
+    this.seq,
+    this.materialDesc,
+    this.linkUrl,
+    this.filePath,
+    this.fileDesc,
+    this.groupId,
+    this.highMark,
+    this.handDate,
+    this.handDate2,
+    this.quartNo,
+    this.isACTIVE,
+    this.insTime,
+    this.insUser,
+    this.studentFilePath,
+    this.studentFileDesc,
+    this.studentUser,
+    this.studentDeliverTime,
+    this.studentGrade,
+    this.canUpload,
+    this.homeworkFileDesc,
+    this.homeworkFileUrl,
+  });
 
   StudentsHomeworkMaterialModel.fromJson(Map<String, dynamic> json) {
     teacherName = json['Teacher_Name'];
@@ -84,7 +91,8 @@ class StudentsHomeworkMaterialModel {
     studentUser = json['Student_User'];
     studentDeliverTime = json['Student_Deliver_Time'];
     studentGrade = json['Student_Grade'];
+    homeworkFileDesc = json['Homework_File_Desc'];
+    homeworkFileUrl = json['Homework_File_Url'];
+    canUpload = json['can_upload'];
   }
-
-  
 }

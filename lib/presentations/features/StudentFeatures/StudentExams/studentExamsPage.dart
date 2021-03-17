@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -237,9 +241,11 @@ class _StudentExamsPageState extends State<StudentExamsPage> {
                       ),
                       Container(
                         child: Text(
-                           model.canEnter == "Y" ? "الإمتحان مفتوح" :  model.differance < 0
-                                ? "وقت الإمتحان إنتهى"
-                                : model.differance.toString(),
+                            model.canEnter == "Y"
+                                ? "الإمتحان مفتوح"
+                                : model.differance < 0
+                                    ? "وقت الإمتحان إنتهى"
+                                    : model.differance.toString(),
                             style: AppThemeData()
                                 .tajwalText
                                 .copyWith(color: Colors.black, fontSize: 14)),
@@ -287,7 +293,6 @@ class _StudentExamsPageState extends State<StudentExamsPage> {
                       SizedBox(
                         height: 10,
                       ),
-
                       model.examGrade == null
                           ? Container()
                           : Container(

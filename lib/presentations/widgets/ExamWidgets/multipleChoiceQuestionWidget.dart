@@ -238,8 +238,13 @@ class _MultipleChoiceQuestionWidgetState
           if (multiChoiceQuestionAnswer == widget.question.answer5) answer = 5;
 
           BlocProvider.of<ExamSubmissionBloc>(context).add(
-              SubmitExamQuestionAnswer(widget.examId, answer.toString(),
-                  widget.question.seq.toString(), "E", widget.question.nextQ));
+              SubmitExamQuestionAnswer(
+                  widget.examId,
+                  answer.toString(),
+                  widget.question.seq.toString(),
+                  "E",
+                  widget.question.nextQ,
+                  null));
 
           //pop view to go back to exams
           Navigator.pop(context);
@@ -254,8 +259,13 @@ class _MultipleChoiceQuestionWidgetState
           if (multiChoiceQuestionAnswer == widget.question.answer5) answer = 5;
 
           BlocProvider.of<ExamSubmissionBloc>(context).add(
-              SubmitExamQuestionAnswer(widget.examId, answer.toString(),
-                  widget.question.seq.toString(), "N", widget.question.nextQ));
+              SubmitExamQuestionAnswer(
+                  widget.examId,
+                  answer.toString(),
+                  widget.question.seq.toString(),
+                  "N",
+                  widget.question.nextQ,
+                  null));
         }
       },
       child: Container(

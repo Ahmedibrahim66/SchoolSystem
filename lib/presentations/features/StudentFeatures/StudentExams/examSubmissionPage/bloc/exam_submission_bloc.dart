@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,41 +85,42 @@ class ExamSubmissionBloc
 
     if (event is SubmitExamQuestionAnswer) {
       yield ExamSubmissionPageLoading();
-      try {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        String token = preferences.getString('userToken');
-        String userId = preferences.getString('userId');
+      // try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      String token = preferences.getString('userToken');
+      String userId = preferences.getString('userId');
 
-        //TODO:: remove the set string and added to the choose school page
-        await preferences.setString("baseURL", "gtseries.net/uploads");
-        String baseUrl = preferences.getString("baseURL");
+      //TODO:: remove the set string and added to the choose school page
+      await preferences.setString("baseURL", "gtseries.net/uploads");
+      String baseUrl = preferences.getString("baseURL");
 
-        String submission = await repository.submitQuestionAnswer(
-            token,
-            userId,
-            event.examId,
-            int.parse(event.questionId),
-            event.answer,
-            event.isEnd);
-        if (event.isEnd == "E") {
-          //exam is finished wait for view pop
-          yield ExamSubmissionPageLoading();
+      String submission = await repository.submitQuestionAnswer(
+          token,
+          userId,
+          event.examId,
+          int.parse(event.questionId),
+          event.answer,
+          event.isEnd,
+          event.file);
+      if (event.isEnd == "E") {
+        //exam is finished wait for view pop
+        yield ExamSubmissionPageLoading();
+      } else {
+        if (submission == "Right") {
+          // submission is correct
+          final List<ExamQuestionAnswerModel> list =
+              await repository.showSelectedQuestion(
+                  token, userId, event.examId, int.parse(event.nextQeustion));
+          yield ExamSubmissionPageLoaded(list: list, baseUrl: baseUrl);
         } else {
-          if (submission == "Right") {
-            // submission is correct
-            final List<ExamQuestionAnswerModel> list =
-                await repository.showSelectedQuestion(
-                    token, userId, event.examId, int.parse(event.nextQeustion));
-            yield ExamSubmissionPageLoaded(list: list, baseUrl: baseUrl);
-          } else {
-            //submission is wrong
-            yield ExamSubmissionPageError();
-          }
+          //submission is wrong
+          yield ExamSubmissionPageError();
         }
-      } catch (e) {
-        print(e.toString());
-        yield ExamSubmissionPageError();
       }
+      // } catch (e) {
+      //print(e.toString());
+      // yield ExamSubmissionPageError();
     }
+    //}
   }
 }

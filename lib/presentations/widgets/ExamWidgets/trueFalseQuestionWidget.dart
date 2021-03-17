@@ -214,8 +214,13 @@ class _TrueFalseQuestionWidgetState extends State<TrueFalseQuestionWidget> {
           if (trueFalseQuestionAnswer == "خطأ") answer = "F";
 
           BlocProvider.of<ExamSubmissionBloc>(context).add(
-              SubmitExamQuestionAnswer(widget.examId, answer,
-                  widget.question.seq.toString(), "E", widget.question.nextQ));
+              SubmitExamQuestionAnswer(
+                  widget.examId,
+                  answer,
+                  widget.question.seq.toString(),
+                  "E",
+                  widget.question.nextQ,
+                  null));
 
           //pop view to go back to exams
           Navigator.pop(context);
@@ -228,8 +233,13 @@ class _TrueFalseQuestionWidgetState extends State<TrueFalseQuestionWidget> {
           if (trueFalseQuestionAnswer == "خطأ") answer = "F";
 
           BlocProvider.of<ExamSubmissionBloc>(context).add(
-              SubmitExamQuestionAnswer(widget.examId, answer.toString(),
-                  widget.question.seq.toString(), "N", widget.question.nextQ));
+              SubmitExamQuestionAnswer(
+                  widget.examId,
+                  answer.toString(),
+                  widget.question.seq.toString(),
+                  "N",
+                  widget.question.nextQ,
+                  null));
         }
       },
       child: Container(

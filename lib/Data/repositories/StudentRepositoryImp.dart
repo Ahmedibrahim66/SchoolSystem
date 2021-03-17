@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:mustafa0_1/Data/DataSources/remoteData/studentRemoteDataSoruce.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
@@ -10,6 +12,7 @@ import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialModel.dart';
+import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkMaterialSubmission.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHomeworkdsAndExamsModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentInfoModel.dart';
@@ -200,18 +203,35 @@ class StudentRepositoryImp implements StudentRepository {
 
   @override
   Future<String> submitQuestionAnswer(String token, String userId, int examId,
-      int questionSeq, String selectedAnswer, String isEnd) async {
+      int questionSeq, String selectedAnswer, String isEnd, File file) async {
     return await studentRemoteDataSource.submitQuestionAnswer(
-        token, userId, examId, questionSeq, selectedAnswer, isEnd);
+        token, userId, examId, questionSeq, selectedAnswer, isEnd, file);
   }
 
   @override
-  Future<List<ZoomLinkModel>> getZoomLinks(String token, String userId) async  {
+  Future<List<ZoomLinkModel>> getZoomLinks(String token, String userId) async {
     return await studentRemoteDataSource.getZoomLinks(token, userId);
   }
 
   @override
-  Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(String token, String userId) async  {
-    return await studentRemoteDataSource.getStudentHomeworkMaterial(token, userId);
+  Future<List<StudentsHomeworkMaterialModel>> getStudentHomeworkMaterial(
+      String token, String userId) async {
+    return await studentRemoteDataSource.getStudentHomeworkMaterial(
+        token, userId);
+  }
+
+  @override
+  Future<bool> submitHomeWork(
+      String token, String studentNumber, String seq, List<File> files) async {
+    return await studentRemoteDataSource.submitHomeWork(
+        token, studentNumber, seq, files);
+  }
+
+  @override
+  Future<List<StudentHomeworkMaterialSubmission>>
+      getStudentHomeworkMaterialSubmissions(
+          String token, String userId, String seq) async {
+    return await studentRemoteDataSource.getStudentHomeworkMaterialSubmissions(
+        token, userId, seq);
   }
 }
