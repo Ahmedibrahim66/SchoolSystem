@@ -1,15 +1,14 @@
 import 'dart:io';
-
+import 'package:mustafa0_1/Data/models/SharedModels/Message.dart';
+import 'package:mustafa0_1/Data/models/SharedModels/MessageDetail.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/CurrentYearAndWeekModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/DailyMarksModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/DaysOfWeekModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/ExamQuestionReviewModel.dart';
-
 import 'package:mustafa0_1/Data/models/StudentModels/ScheduleSubjectModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentAbsenceModel.dart';
-
 import 'package:mustafa0_1/Data/models/StudentModels/StudentClassPeriodModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentExamModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/StudentHealthModel.dart';
@@ -112,4 +111,10 @@ abstract class StudentRepository {
   Future<List<StudentHomeworkMaterialSubmission>>
       getStudentHomeworkMaterialSubmissions(
           String token, String userId, String seq);
+
+  Future<List<Message>> getStudentMessages(
+      String token, String userId, String filter);
+
+  Future<MessageDetail> getStudentMessageDetail(
+      String token, String userId, String messageNo);
 }

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:mustafa0_1/Data/DataSources/remoteData/studentRemoteDataSoruce.dart';
+import 'package:mustafa0_1/Data/models/SharedModels/Message.dart';
+import 'package:mustafa0_1/Data/models/SharedModels/MessageDetail.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/CurrentYearAndWeekModel.dart';
@@ -233,5 +235,19 @@ class StudentRepositoryImp implements StudentRepository {
           String token, String userId, String seq) async {
     return await studentRemoteDataSource.getStudentHomeworkMaterialSubmissions(
         token, userId, seq);
+  }
+
+  @override
+  Future<List<Message>> getStudentMessages(
+      String token, String userId, String filter) async {
+    return await studentRemoteDataSource.getStudentMessages(
+        token, userId, filter);
+  }
+
+  @override
+  Future<MessageDetail> getStudentMessageDetail(
+      String token, String userId, String messageNo) async {
+    return await studentRemoteDataSource.getStudentMessageDetail(
+        token, userId, messageNo);
   }
 }

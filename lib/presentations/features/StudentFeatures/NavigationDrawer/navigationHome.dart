@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/ChatList/chatlist.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/DashBoard/NewStudentDashboard.dart';
+import 'package:mustafa0_1/presentations/features/StudentFeatures/Messages/MessagesRecived/MessagesUI.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/NavigationDrawer/bloc/studentnavigation_bloc.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentExams/studentExamsPage.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentHomeworkMaterial/StudentHomeWorkMaterial.dart';
@@ -10,10 +11,10 @@ import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentMarksPa
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentPayment/newStudentPayment.dart';
 import 'package:mustafa0_1/presentations/features/StudentFeatures/StudentProfile/newStudentInfo.dart';
 
-/// this class is the home of the logic for the navigation drawer 
-/// here the in this class according to the state in the bloc builder and 
-/// the StudentnavigationBloc this page will show the correct page 
-/// accordingly 
+/// this class is the home of the logic for the navigation drawer
+/// here the in this class according to the state in the bloc builder and
+/// the StudentnavigationBloc this page will show the correct page
+/// accordingly
 class NavigationHome extends StatefulWidget {
   @override
   _NavigationHomeState createState() => _NavigationHomeState();
@@ -26,9 +27,9 @@ class _NavigationHomeState extends State<NavigationHome> {
         builder: (context, state) {
       if (state is StudentnavigationInitial) {
         BlocProvider.of<StudentnavigationBloc>(context)
-                            .add(NavigateToHomeScreen(context));
+            .add(NavigateToHomeScreen(context));
       }
-      if(state is StudentnavigationToHome){
+      if (state is StudentnavigationToHome) {
         return NewStudentDashboard();
       }
 
@@ -39,7 +40,7 @@ class _NavigationHomeState extends State<NavigationHome> {
       if (state is StudentMarksState) {
         return NewStudentMarksPage();
       }
-       if (state is StudentsPaymentState) {
+      if (state is StudentsPaymentState) {
         return NewStudentPayment();
       }
 
@@ -55,13 +56,15 @@ class _NavigationHomeState extends State<NavigationHome> {
         return StudentExamsPage();
       }
 
-      if (state is ChooseChild) {
-      print("choose children");  
+      if (state is ChooseChild) {}
+
+      if (state is StudentsDiscussionState) {
+        return ChatList();
       }
 
-      if(state is StudentsDiscussionState)
-      return ChatList();
-
+      if (state is StudentsMessagesState) {
+        return MessagesUI();
+      }
 
       return Container();
     });

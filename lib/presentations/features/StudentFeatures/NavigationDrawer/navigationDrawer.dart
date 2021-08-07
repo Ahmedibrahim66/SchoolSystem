@@ -133,8 +133,12 @@ class StudentNavigationDrawer extends StatelessWidget {
                       }),
 
                 // messaging page is for both users
-                //TODO : Create parent visit page
-                drawerTile("الرسائل", () {}),
+                state is StudentsMessagesState
+                    ? drawerTilePressed("الرسائل")
+                    : drawerTile("الرسائل", () {
+                        BlocProvider.of<StudentnavigationBloc>(context)
+                            .add(NavigateToStudentMessages(context));
+                      }),
 
                 // logout button is for both users
                 drawerTile("تسجيل الخروج", () {

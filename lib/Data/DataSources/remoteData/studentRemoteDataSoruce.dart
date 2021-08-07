@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:mustafa0_1/Data/models/SharedModels/Message.dart';
+import 'package:mustafa0_1/Data/models/SharedModels/MessageDetail.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/BehaviourModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/ChatListModel.dart';
 import 'package:mustafa0_1/Data/models/StudentModels/CurrentYearAndWeekModel.dart';
@@ -793,6 +795,45 @@ class StudentRemoteDataSource implements StudentRepository {
     } catch (e) {
       //handel excpetion later
       print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<Message>> getStudentMessages(
+      String token, String userId, String filter) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/message_inbox/?token=$token&Student_No=$userId&Is_Read=$filter');
+      List data = jsonDecode(response.body);
+      List<Message> list = [];
+      for (dynamic message in data) {
+        list.add(Message.fromJson(message));
+      }
+      return list;
+    } catch (e) {
+      //handel excpetion later
+      print(e.toString());
+      return null;
+    }
+  }
+
+  @override
+  Future<MessageDetail> getStudentMessageDetail(
+      String token, String userId, String messageNo) async {
+    String mainURL = "http://portal.gtseries.net/School_API/";
+    try {
+      Response response = await get(
+          '$mainURL/view_message/?token=$token&Student_No=$userId&msg_no=$messageNo');
+      List<dynamic> data = jsonDecode(response.body);
+      print(data);
+      MessageDetail message = MessageDetail.fromJson(data[0]);
+      print(message);
+      return message;
+    } catch (e) {
+      //handel excpetion later
+      print(e.toString());
       return null;
     }
   }
